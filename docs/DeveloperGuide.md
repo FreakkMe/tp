@@ -753,56 +753,24 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**UC9. Undo the previous command**
-
-**System:** HRdex
-
-**Use Case:** UC9 - Undo the previous command
-
-**Actor:** Interviewer
-
-**Precondition:** 
-- The application is running and the user is at the main screen.
-
-**Guarantees:**
-
-- **Success guarantee:** The most recent undoable command is reversed successfully.
-
-- **Failure guarantee:** No changes are made to the existing data.
-
-**MSS**
-
-1.  Interviewer enters the command to undo the previous command.
-2.  HRdex checks whether there is a previous undoable command.
-3.  HRdex reverses the effects of the previous command.
-4.  HRdex displays a success message.
-
-    Use case ends.
-
-**Extensions**
-
-* 2a. There is no previous undoable command.
-
-  * 2a1. HRdex shows an error message indicating that there is no command to undo.
-
-    Use case ends.
-      
+     
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
+1.  Should work on any devices with Windows, macOS or Linux installed as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 applicant records without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 4.  A new user with basic command-line familiarity should be able to learn and use the core features of the product within 30 minutes by referring to the User Guide.
 5.  Should respond to typical user commands within 2 seconds when operating on a dataset of up to 1000 applicant records.
 6.  Should store data locally on the user’s device so that it can be used without an internet connection.
 7.  Should preserve data between sessions by saving all applicant and interview records to persistent storage.
-8.  Should reject invalid inputs with clear and specific error messages, so that users can correct their commands easily.
-9.  Should prevent ambiguous or inconsistent data states, such as duplicate applicants with the same student ID or phone number, or multiple interview records for one applicant.
-10.  Should be able to recover from invalid commands without crashing or corrupting stored data.
-11.  Should remain usable on screens with a resolution of 1280×720 or higher.
-12.  Should not require horizontal scrolling for normal use.
-13.  Should be maintainable enough for future student developers to add new commands or extend the interview record model with reasonable effort.
-14.  Command formats should remain consistent across similar operations so that users can learn the system quickly.
+8.  Should preserve data between devices by saving persistent storage within the app and not locally.
+9.  Should have a predictable location for data within the app
+10.  Should reject invalid inputs with clear and specific error messages, so that users can correct their commands easily.
+11.  Should prevent ambiguous or inconsistent data states, such as duplicate applicants with the same student ID or phone number, or multiple interview records for one applicant.
+12.  Should be able to recover from invalid commands without crashing or corrupting stored data.
+13.  Should remain usable on screens with a resolution of 1280×720 or higher.
+14.  Should be maintainable enough for future student developers to add new commands or extend the interview record model with reasonable effort.
+15.  Command formats should remain consistent across similar operations so that users can learn the system quickly.
 
 ### Glossary
 
