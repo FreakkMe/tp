@@ -44,6 +44,11 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     //// list overwrite operations
 
+    @Override
+    public InterviewDatabase getInterviewDatabase() {
+        return interviewDatabase;
+    }
+
     /**
      * Replaces the contents of the person list with {@code persons}.
      * {@code persons} must not contain duplicate persons.
