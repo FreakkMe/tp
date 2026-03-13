@@ -30,7 +30,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
    * `add n/John Doe sid/A1234567B p/98765432 : Adds an applicant named `John Doe` to HRdex.
 
-   * `delete 3` : Deletes the 3rd applicant shown in the current list.
+   * `delete sid/A1234567B` : Deletes the applicant with student ID `A1234567B`.
 
    * `clear` : Deletes all applicant records.
 
@@ -122,19 +122,21 @@ Examples:
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
-### Deleting a person : `delete`
+### Deleting an applicant record : `delete`
 
-Deletes the specified person from the address book.
+Deletes the specified applicant record from HRdex.
 
-Format: `delete INDEX`
+Format: 
+* `delete sid/STUDENT_ID`
+* `delete p/PHONE_NUMBER`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+* Deletes the applicant record matching the given `STUDENT_ID` or `PHONE_NUMBER`.
+* The student ID or phone number provided must be valid and must belong to an existing applicant record.
+* Any associated interview record will also be deleted.​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `delete sid/A1234567B` deletes the applicant record with student ID `A1234567B` in HRdex.
+* `delete p/98765432` deletes the applicant record with phone number `98765432`.
 
 ### Clearing all entries : `clear`
 
@@ -185,9 +187,9 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add** | `add n/NAME sid/STUDENT_ID p/PHONE_NUMBER​` <br> e.g., `add n/James Ho sid/A1234567B p/22224444`
 **Clear** | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Delete** | `delete sid/STUDENT_ID` or `delete p/PHONE_NUMBER`<br> e.g., `delete sid/A1234567B` or `delete p/98765432`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List** | `list`
