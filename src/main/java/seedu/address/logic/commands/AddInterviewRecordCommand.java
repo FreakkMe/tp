@@ -20,8 +20,8 @@ public class AddInterviewRecordCommand extends Command {
     public static final String COMMAND_WORD = "addInterviewRecord";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a new interview record.\n"
-            + "Format: " + COMMAND_WORD + " id/ID date/DATE notes/NOTES\n"
-            + "Example: " + COMMAND_WORD + " id/INT-456 date/2026-04-10 notes/2nd technical round";
+            + "Format: " + COMMAND_WORD + " id/ID d/DATE nt/NOTES\n"
+            + "Example: " + COMMAND_WORD + " id/I-001 d/2026-04-10 nt/2nd technical round";
 
     public static final String MESSAGE_SUCCESS = "New interview added: %s";
     public static final String MESSAGE_DUPLICATE = "Interview with this ID already exists: %s";

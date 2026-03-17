@@ -16,10 +16,10 @@ public class LinkInterviewRecordCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Links an existing interview record to the person. \n"
-            + "Parameters: PERSON_INDEX "
-            + "id/INTERVIEW_ID "
+            + "Parameters: INDEX "
+            + "ID "
             + "Example: " + COMMAND_WORD + " 1 "
-            + "id/I0001 ";
+            + "I-001 ";
 
     public static final String MESSAGE_SUCCESS = "Interview record linked to: %1$s";
     public static final String MESSAGE_PERSON_NOT_FOUND = "The person index provided is invalid.";

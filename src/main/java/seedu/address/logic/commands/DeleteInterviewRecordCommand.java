@@ -15,7 +15,7 @@ public class DeleteInterviewRecordCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes an interview record and removes it from all linked persons.\n"
-            + "Parameters: INTERVIEW_ID\n"
+            + "Parameters: ID\n"
             + "Example: " + COMMAND_WORD + " I-007";
 
     public static final String MESSAGE_SUCCESS = "Deleted interview record: %s";
