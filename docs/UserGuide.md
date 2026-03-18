@@ -127,7 +127,8 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find A1234567B` returns `James` tagged with `A1234567B`
+* `find A1234567B` returns `James` tagged with `A1234567B`<br>
+  ![result for 'find A1234567B'](images/findJamesByStudentIdTag.png)
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
