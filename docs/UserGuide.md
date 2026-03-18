@@ -28,11 +28,9 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
    * `list` : Lists all applicants.
 
-   * `add n/John Doe sid/A1234567B p/98765432 : Adds an applicant named `John Doe` to HRdex.
+   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds an applicant named `John Doe` to HRdex.
 
-   * `delete sid/A1234567B` : Deletes the applicant with student ID `A1234567B`.
-  
-   * `view sid/A1234567B` : Displays the full applicant record for the applicant with student ID `A1234567B`.
+   * `delete 3` : Deletes the 3rd applicant shown in the current list.
 
    * `clear` : Deletes all applicant records.
 
@@ -49,10 +47,16 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 **:information_source: Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME sid/STUDENT_ID p/PHONE_NUMBER`, `NAME`, `STUDENT_ID` and `PHONE_NUMBER` are parameters which can be used as `add n/John Doe sid/A1234567B p/98765432`.
+  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+
+* Items in square brackets are optional.<br>
+  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+
+* Items with `…`​ after them can be used multiple times including zero times.<br>
+  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 
 * Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME sid/STUDENT_ID p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME sid/STUDENT_ID` is also acceptable.
+  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
@@ -73,39 +77,21 @@ Format: `help`
 
 Adds an applicant record to HRdex.
 
-Format: `add n/NAME sid/STUDENT_ID p/PHONE_NUMBER​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
 </div>
 
 Examples:
-* `add n/John Doe sid/A1234567B p/9876543`
-* `add n/Betsy Crowe sid/A7654321C p/91234567`
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
 ### Listing all persons : `list`
 
 Shows a list of all persons in the address book.
 
 Format: `list`
-
-### Viewing a full applicant record : `view`
-
-Displays the full applicant record, including interview details if available.
-
-Format:
-* `view sid/STUDENT_ID`
-* `view n/NAME`
-
-* If `sid/STUDENT_ID` is used, HRdex displays the matching applicant record.
-* If `n/NAME` is used, HRdex searches for applicants with the given name.
-* If exactly one applicant matches the given name, HRdex displays the full applicant record.
-* If more than one applicant matches the given name, HRdex will inform the user and ask them to use the student ID instead.
-* If no interview record exists, HRdex will display the applicant’s personal details and indicate that no interview record is available.
-
-Examples:
-* `view sid/A1234567B`
-* `view n/John Doe`
 
 ### Editing a person : `edit`
 
@@ -126,19 +112,22 @@ Examples:
 
 ### Locating persons by name: `find`
 
-Finds persons whose names contain any of the given keywords.
+Finds persons whose names or tags contain any of the given keywords.
 
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
+* Applicant names and tags are searched.
 * Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Applicants matching at least one keyword will be returned (i.e. `OR` search).
+  e.g. `Hans Bo` will return applicants with the name `Hans Gruber`, `Bo Yang`
+* Tags can also be used as search keywords.
+  e.g. `find A1234567B` will return the applicant tagged with `A1234567B`
 
 Examples:
 * `find John` returns `john` and `John Doe`
+* `find A1234567B` returns `James` tagged with `A1234567B`
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
@@ -146,17 +135,15 @@ Examples:
 
 Deletes the specified applicant record from HRdex.
 
-Format: 
-* `delete sid/STUDENT_ID`
-* `delete p/PHONE_NUMBER`
+Format: `delete INDEX`
 
-* Deletes the applicant record matching the given `STUDENT_ID` or `PHONE_NUMBER`.
-* The student ID or phone number provided must be valid and must belong to an existing applicant record.
-* Any associated interview record will also be deleted.​
+* Deletes the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `delete sid/A1234567B` deletes the applicant record with student ID `A1234567B` in HRdex.
-* `delete p/98765432` deletes the applicant record with phone number `98765432`.
+* `list` followed by `delete 2` deletes the 2nd person in the address book.
+* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
 ### Clearing all entries : `clear`
 
@@ -207,11 +194,10 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME sid/STUDENT_ID p/PHONE_NUMBER​` <br> e.g., `add n/James Ho sid/A1234567B p/22224444`
+**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
 **Clear** | `clear`
-**Delete** | `delete sid/STUDENT_ID` or `delete p/PHONE_NUMBER`<br> e.g., `delete sid/A1234567B` or `delete p/98765432`
-**View** | `view sid/STUDENT_ID` or `view n/NAME`<br> e.g., `view sid/A1234567B` or `view n/John Doe`
+**Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`or `find A1234567B`
 **List** | `list`
 **Help** | `help`
