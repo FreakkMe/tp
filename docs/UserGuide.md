@@ -26,13 +26,13 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * `list` : Lists all contacts.
+   * `list` : Lists all applicants.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds an applicant named `John Doe` to HRdex.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+   * `delete 3` : Deletes the 3rd applicant shown in the current list.
 
-   * `clear` : Deletes all contacts.
+   * `clear` : Deletes all applicant records.
 
    * `exit` : Exits the app.
 
@@ -73,9 +73,9 @@ Shows a message explaining how to access the help page.
 Format: `help`
 
 
-### Adding a person: `add`
+### Adding an applicant record: `add`
 
-Adds a person to the address book.
+Adds an applicant record to HRdex.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
@@ -112,25 +112,29 @@ Examples:
 
 ### Locating persons by name: `find`
 
-Finds persons whose names contain any of the given keywords.
+Finds persons whose names or tags contain any of the given keywords.
 
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
+* Applicant names and tags are searched.
 * Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Applicants matching at least one keyword will be returned (i.e. `OR` search).
+  e.g. `Hans Bo` will return applicants with the name `Hans Gruber`, `Bo Yang`
+* Tags can also be used as search keywords.
+  e.g. `find A1234567B` will return the applicant tagged with `A1234567B`
 
 Examples:
 * `find John` returns `john` and `John Doe`
+* `find A1234567B` returns `James` tagged with `A1234567B`<br>
+  ![result for 'find A1234567B'](images/findJamesByStudentIdTag.png)
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
-### Deleting a person : `delete`
+### Deleting an applicant record : `delete`
 
-Deletes the specified person from the address book.
+Deletes the specified applicant record from HRdex.
 
 Format: `delete INDEX`
 
@@ -263,6 +267,6 @@ Action | Format, Examples
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`or `find A1234567B`
 **List** | `list`
 **Help** | `help`
