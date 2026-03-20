@@ -158,8 +158,8 @@ Format: `addInterviewRecord id/ID d/DATE nt/NOTES`
 * If the command is used to add an interview record with an existing `ID`, the command will be cancelled.
 
 Examples:
-* `addInterviewRecord I-001 d/2026-04-17 nt/Shows excellent communication skill` adds an interview record with id `I-001`, date `2026-04-17`, and remarks `Shows excellent communication skill`.
-* `addInterviewRecord I-002 d/2026-04-18 nt/Expert in Java` adds an interview record with id `I-002`, date `2026-04-18`, and remarks `Expert in Java`.
+* `addInterviewRecord id/I-001 d/2026-04-17 nt/Shows excellent communication skill` adds an interview record with id `I-001`, date `2026-04-17`, and remarks `Shows excellent communication skill`.
+* `addInterviewRecord id/I-002 d/2026-04-18 nt/Expert in Java` adds an interview record with id `I-002`, date `2026-04-18`, and remarks `Expert in Java`.
 
 ### Deleting an interview record : `deleteInterviewRecord`
 
@@ -269,4 +269,9 @@ Action | Format, Examples
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`or `find A1234567B`
 **List** | `list`
+**addInterviewRecord** | `addInterviewRecord [id/ID] [d/DATE] [nt/NOTES]…`<br> e.g.,`addInterviewRecord id/I-001 d/2026-04-17 nt/Shows excellent communication skill`
+**deleteInterviewRecord** | `deleteInterviewRecord [ID]…`<br> e.g.,`deleteInterviewRecord I-001`
+**linkInterviewRecord** | `linkInterviewRecord [INDEX] [ID]…`<br> e.g.,`linkInterviewRecord 1 I-001`
+**removeInterviewRecord** | `removeInterviewRecord [INDEX] [ID]…`<br> e.g.,`removeInterviewRecord 1 I-001`
+**listInterviews** | `listInterviews`
 **Help** | `help`
