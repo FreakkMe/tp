@@ -1,144 +1,120 @@
 package seedu.address.ui;
 
-import java.util.logging.Logger;
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputControl;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import seedu.address.commons.core.GuiSettings;
-import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Person;
 
-/**
- * The Main Window. Provides the basic application layout containing
- * a menu bar and space where other JavaFX elements can be placed.
- */
-public class MainWindow extends UiPart<Stage> {
+class MainWindow {
+    private final Stage primaryStage;
+    private final Logic logic;
+    private final VBox root = new VBox();
+    private final FlowPane personContainer = new FlowPane(16, 16);
+    private final ResultDisplay resultDisplay = new ResultDisplay();
+    private final HelpWindow helpWindow = new HelpWindow();
 
-    private static final String FXML = "MainWindow.fxml";
-
-    private final Logger logger = LogsCenter.getLogger(getClass());
-
-    private Stage primaryStage;
-    private Logic logic;
-
-    // Independent Ui parts residing in this Ui container
-    private PersonListPanel personListPanel;
-    private ResultDisplay resultDisplay;
-    private HelpWindow helpWindow;
-
-    @FXML
-    private StackPane commandBoxPlaceholder;
-
-    @FXML
-    private MenuItem helpMenuItem;
-
-    @FXML
-    private StackPane personListPanelPlaceholder;
-
-    @FXML
-    private StackPane resultDisplayPlaceholder;
-
-    @FXML
-    private StackPane statusbarPlaceholder;
-
-    /**
-     * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
-     */
     public MainWindow(Stage primaryStage, Logic logic) {
-        super(FXML, primaryStage);
-
-        // Set dependencies
         this.primaryStage = primaryStage;
         this.logic = logic;
 
-        // Configure the UI
-        setWindowDefaultSize(logic.getGuiSettings());
+        root.setBackground(new Background(new BackgroundFill(Color.web("#1a1a1e"), null, null)));
 
-        setAccelerators();
+        // 1. Menu Bar (Toolbar)
+        MenuBar menuBar = new MenuBar();
+        menuBar.setStyle("-fx-background-color: #252529; -fx-font-family: 'JetBrains Mono';");
 
-        helpWindow = new HelpWindow();
-    }
+        Menu fileMenu = new Menu("File");
+        MenuItem exitItem = new MenuItem("Exit");
+        exitItem.setOnAction(e -> handleExit());
+        fileMenu.getItems().add(exitItem);
 
-    public Stage getPrimaryStage() {
-        return primaryStage;
-    }
+        Menu helpMenu = new Menu("Help");
+        MenuItem helpItem = new MenuItem("Help");
+        helpItem.setOnAction(e -> handleHelp());
+        helpMenu.getItems().add(helpItem);
 
-    private void setAccelerators() {
-        setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
-    }
+        menuBar.getMenus().addAll(fileMenu, helpMenu);
 
-    /**
-     * Sets the accelerator of a MenuItem.
-     * @param keyCombination the KeyCombination value of the accelerator
-     */
-    private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
-        menuItem.setAccelerator(keyCombination);
+        // 2. Command Input Logic
+        CommandBox commandBox = new CommandBox(commandText -> {
+            try {
+                CommandResult commandResult = logic.execute(commandText);
+                resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+                updatePersons(logic.getFilteredPersonList());
 
-        /*
-         * TODO: the code below can be removed once the bug reported here
-         * https://bugs.openjdk.java.net/browse/JDK-8131666
-         * is fixed in later version of SDK.
-         *
-         * According to the bug report, TextInputControl (TextField, TextArea) will
-         * consume function-key events. Because CommandBox contains a TextField, and
-         * ResultDisplay contains a TextArea, thus some accelerators (e.g F1) will
-         * not work when the focus is in them because the key event is consumed by
-         * the TextInputControl(s).
-         *
-         * For now, we add following event filter to capture such key events and open
-         * help window purposely so to support accelerators even when focus is
-         * in CommandBox or ResultDisplay.
-         */
-        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getTarget() instanceof TextInputControl && keyCombination.match(event)) {
-                menuItem.getOnAction().handle(new ActionEvent());
-                event.consume();
+                if (commandResult.isShowHelp()) {
+                    handleHelp();
+                }
+                if (commandResult.isExit()) {
+                    handleExit();
+                }
+                return commandResult;
+            } catch (CommandException | ParseException e) {
+                // Show specific message in result box and re-throw to trigger red text
+                resultDisplay.setFeedbackToUser(e.getMessage());
+                throw e;
             }
         });
+
+        Label promptLabel = new Label(">");
+        promptLabel.setTextFill(Color.web("#5a5a70"));
+        promptLabel.setStyle("-fx-font-family: 'JetBrains Mono'; -fx-font-size: 14px;");
+
+        HBox commandWrapper = new HBox(promptLabel, commandBox);
+        commandWrapper.setAlignment(Pos.CENTER_LEFT);
+        commandWrapper.setPadding(new Insets(10, 28, 5, 28));
+        commandWrapper.setSpacing(10);
+
+        // 3. Result Display
+        VBox resultWrapper = new VBox(resultDisplay.getDisplay());
+        resultWrapper.setPadding(new Insets(0, 28, 10, 28));
+
+        // 4. Scrollable Contact List
+        personContainer.setPadding(new Insets(10, 28, 28, 28));
+        ScrollPane scrollPane = new ScrollPane(personContainer);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+        root.getChildren().addAll(menuBar, commandWrapper, resultWrapper, scrollPane);
+        primaryStage.setScene(new Scene(root, 900, 700));
     }
 
-    /**
-     * Fills up all the placeholders of this window.
-     */
-    void fillInnerParts() {
-        personListPanel = new PersonListPanel(logic.getFilteredPersonList(), logic.getInterviewDatabase());
-        personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
-
-        resultDisplay = new ResultDisplay();
-        resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
-
-        StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getAddressBookFilePath());
-        statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
-
-        CommandBox commandBox = new CommandBox(this::executeCommand);
-        commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+    public void fillInnerParts() {
+        updatePersons(logic.getFilteredPersonList());
     }
 
-    /**
-     * Sets the default size based on {@code guiSettings}.
-     */
-    private void setWindowDefaultSize(GuiSettings guiSettings) {
-        primaryStage.setHeight(guiSettings.getWindowHeight());
-        primaryStage.setWidth(guiSettings.getWindowWidth());
-        if (guiSettings.getWindowCoordinates() != null) {
-            primaryStage.setX(guiSettings.getWindowCoordinates().getX());
-            primaryStage.setY(guiSettings.getWindowCoordinates().getY());
+    public void updatePersons(ObservableList<Person> persons) {
+        personContainer.getChildren().clear();
+        for (int i = 0; i < persons.size(); i++) {
+            PersonCard card = new PersonCard(persons.get(i), i + 1, logic.getInterviewDatabase());
+            card.setPrefWidth(360);
+            personContainer.getChildren().add(card);
         }
     }
 
-    /**
-     * Opens the help window or focuses on it if it's already opened.
-     */
-    @FXML
+    public void show() {
+        primaryStage.show();
+    }
+
     public void handleHelp() {
         if (!helpWindow.isShowing()) {
             helpWindow.show();
@@ -147,50 +123,15 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
-    void show() {
-        primaryStage.show();
-    }
-
-    /**
-     * Closes the application.
-     */
-    @FXML
     private void handleExit() {
-        GuiSettings guiSettings = new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
-                (int) primaryStage.getX(), (int) primaryStage.getY());
-        logic.setGuiSettings(guiSettings);
-        helpWindow.hide();
         primaryStage.hide();
     }
 
-    public PersonListPanel getPersonListPanel() {
-        return personListPanel;
-    }
-
     /**
-     * Executes the command and returns the result.
-     *
-     * @see seedu.address.logic.Logic#execute(String)
+     * Returns the primary stage of the application.
+     * This is required by UiManager to display alert dialogs.
      */
-    private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
-        try {
-            CommandResult commandResult = logic.execute(commandText);
-            logger.info("Result: " + commandResult.getFeedbackToUser());
-            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
-
-            if (commandResult.isShowHelp()) {
-                handleHelp();
-            }
-
-            if (commandResult.isExit()) {
-                handleExit();
-            }
-
-            return commandResult;
-        } catch (CommandException | ParseException e) {
-            logger.info("An error occurred while executing command: " + commandText);
-            resultDisplay.setFeedbackToUser(e.getMessage());
-            throw e;
-        }
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 }

@@ -1,96 +1,114 @@
 package seedu.address.ui;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import seedu.address.model.interview.InterviewDatabase;
-import seedu.address.model.interview.InterviewRecord;
 import seedu.address.model.person.Person;
 
-
 /**
- * An UI component that displays information of a {@code Person}.
+ * A UI component that displays information of a {@code Person}.
  */
-public class PersonCard extends UiPart<Region> {
+class PersonCard extends VBox {
+    private static final Color BG_CARD = Color.web("#252529");
+    private static final Color BORDER_COLOR = Color.web("#35353d");
+    private static final String MONO = "JetBrains Mono";
 
-    private static final String FXML = "PersonListCard.fxml";
+    public PersonCard(Person person, int index, InterviewDatabase db) {
+        setPadding(new Insets(15));
+        setSpacing(8);
+        setMinWidth(350);
+        setMaxWidth(400);
+        setBackground(new Background(new BackgroundFill(BG_CARD, new CornerRadii(8), Insets.EMPTY)));
+        setBorder(new Border(new BorderStroke(BORDER_COLOR, BorderStrokeStyle.SOLID,
+                new CornerRadii(8), new BorderWidths(1))));
 
-    /**
-     * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
-     * As a consequence, UI elements' variable names cannot be set to such keywords
-     * or an exception will be thrown by JavaFX during runtime.
-     *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
-     */
+        // 1. Header: Name and Index
+        Label nameLabel = new Label(person.getName().fullName);
+        nameLabel.setTextFill(Color.web("#e8e8ec"));
+        nameLabel.setFont(Font.font(MONO, FontWeight.BOLD, 15));
 
-    public final Person person;
-    private final InterviewDatabase interviewDatabase;
+        Label indexLabel = new Label("#" + index);
+        indexLabel.setTextFill(Color.web("#5a5a70"));
+        indexLabel.setFont(Font.font(MONO, 11));
 
-    @FXML
-    private HBox cardPane;
-    @FXML
-    private Label name;
-    @FXML
-    private Label id;
-    @FXML
-    private Label phone;
-    @FXML
-    private Label address;
-    @FXML
-    private Label email;
-    @FXML
-    private FlowPane tags;
-    @FXML
-    private Label interviewRecords;
+        HBox header = new HBox(nameLabel);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        header.getChildren().addAll(spacer, indexLabel);
+        header.setAlignment(Pos.CENTER_LEFT);
 
-    /**
-     * Creates a {@code PersonCode} with the given {@code Person} and index to display.
-     */
-    public PersonCard(Person person, int displayedIndex, InterviewDatabase interviewDatabase) {
-        super(FXML);
-        this.person = person;
-        this.interviewDatabase = interviewDatabase;
+        // 2. Contact Info
+        VBox fields = new VBox(4,
+                createField("Phone", person.getPhone().value),
+                createField("Email", person.getEmail().value),
+                createField("Address", person.getAddress().value)
+        );
 
-        id.setText(displayedIndex + ". ");
-        name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        address.setText(person.getAddress().value);
-        email.setText(person.getEmail().value);
+        getChildren().addAll(header, fields);
 
-        String recordsText = person.getInterviewIds().stream()
-                .map(interviewDatabase::getInterviewRecord)
-                .filter(record -> record != null)
-                .map(InterviewRecord::toString)
-                .collect(Collectors.joining("\n"));
-
-        if (recordsText.isEmpty()) {
-            interviewRecords.setText("");
-        } else {
-            interviewRecords.setText("Interview Records:\n" + recordsText);
-        }
-
+        // 3. Tags
+        FlowPane tagsPane = new FlowPane();
+        tagsPane.setHgap(4);
+        tagsPane.setVgap(4);
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+                .forEach(tag -> {
+                    Label tagLabel = new Label(tag.tagName);
+                    tagLabel.setTextFill(Color.web("#8888a0"));
+                    tagLabel.setFont(Font.font(MONO, 10));
+                    tagLabel.setPadding(new Insets(2, 5, 2, 5));
+                    tagLabel.setBackground(new Background(new BackgroundFill(
+                            Color.web("#35353d"), new CornerRadii(4), Insets.EMPTY)));
+                    tagsPane.getChildren().add(tagLabel);
+                });
 
-        updateInterviewRecords();
-    }
+        if (!tagsPane.getChildren().isEmpty()) {
+            getChildren().add(tagsPane);
+        }
 
-    private void updateInterviewRecords() {
-        // Instead of person.getInterviewRecords(), use the IDs to fetch from the DB
-        String recordsText = person.getInterviewIds().stream() // list of String IDs
-                .map(id -> {
-                    InterviewRecord record = interviewDatabase.getInterviewRecord(id); // fetch the full record
-                    return record == null ? "" : record.toString();
-                })
-                .filter(text -> !text.isEmpty()) // remove any null/empty records
+        // 4. Interview Records
+        String records = person.getInterviewIds().stream()
+                .map(db::getInterviewRecord)
+                .filter(Objects::nonNull)
+                .map(Object::toString)
                 .collect(Collectors.joining("\n"));
 
-        interviewRecords.setText(recordsText.isEmpty() ? "" : "Interview Records:\n" + recordsText);
+        if (!records.isEmpty()) {
+            Label recLabel = new Label("Interviews:\n" + records);
+            recLabel.setTextFill(Color.web("#5a5a70"));
+            recLabel.setFont(Font.font(MONO, 11));
+            recLabel.setWrapText(true);
+            getChildren().add(recLabel);
+        }
+    }
+
+    private HBox createField(String key, String value) {
+        Label k = new Label(key + ": ");
+        k.setTextFill(Color.web("#5a5a70"));
+        k.setFont(Font.font(MONO, 12));
+        Label v = new Label(value);
+        v.setTextFill(Color.web("#8888a0"));
+        v.setFont(Font.font(MONO, 12));
+        return new HBox(k, v);
     }
 }
