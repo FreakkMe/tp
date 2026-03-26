@@ -1,28 +1,37 @@
 package seedu.address.ui;
 
-import static java.util.Objects.requireNonNull;
-
-import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
 
-/**
- * A ui for the status bar that is displayed at the header of the application.
- */
-public class ResultDisplay extends UiPart<Region> {
-
-    private static final String FXML = "ResultDisplay.fxml";
-
-    @FXML
-    private TextArea resultDisplay;
+class ResultDisplay extends Region {
+    private final TextArea resultDisplay = new TextArea();
 
     public ResultDisplay() {
-        super(FXML);
+        resultDisplay.setEditable(false);
+        resultDisplay.setWrapText(true);
+        resultDisplay.getStyleClass().add("result-display");
+
+        // Manual styling to match your dark theme
+        resultDisplay.setStyle(
+                "-fx-control-inner-background: #1a1a1e; "
+                        + "-fx-text-fill: #e8e8ec; "
+                        + "-fx-font-family: 'JetBrains Mono'; "
+                        + "-fx-background-color: transparent; "
+                        + "-fx-border-color: #35353d; "
+                        + "-fx-border-width: 1; "
+                        + "-fx-border-radius: 5;"
+        );
+
+        resultDisplay.setPrefHeight(100);
+        resultDisplay.setMinHeight(100);
     }
 
-    public void setFeedbackToUser(String feedbackToUser) {
-        requireNonNull(feedbackToUser);
-        resultDisplay.setText(feedbackToUser);
+    public void setFeedbackToUser(String feedback) {
+        resultDisplay.setText(feedback);
     }
 
+    // Since this is a Region, we need to return the internal TextArea
+    public TextArea getDisplay() {
+        return resultDisplay;
+    }
 }
