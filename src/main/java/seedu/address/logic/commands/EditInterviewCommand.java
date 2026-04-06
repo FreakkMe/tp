@@ -32,6 +32,11 @@ public class EditInterviewCommand extends Command {
 
     private final Index targetIndex;
 
+    /**
+     * Constructs an {@code EditInterviewCommand} with the specified target index.
+     *
+     * @param targetIndex The index of the person whose interview notes are to be edited.
+     */
     public EditInterviewCommand(Index targetIndex) {
         requireNonNull(targetIndex);
         this.targetIndex = targetIndex;
