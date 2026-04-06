@@ -21,9 +21,9 @@ HRdex helps reduce repetitive manual work and simplifies employee data managemen
 
 ---
 
-## Value Proposition
+## Value Proposition 
 
-Compared with traditional HR record systems, HRdex:
+Compared with traditional Interview recording system, HRdex:
 
 * Enables **fast keyboard-driven commands**
 * Reduces repetitive data entry
