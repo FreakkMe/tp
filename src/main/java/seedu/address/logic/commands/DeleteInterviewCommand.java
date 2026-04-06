@@ -31,7 +31,12 @@ public class DeleteInterviewCommand extends Command {
     public static final String MESSAGE_NO_INTERVIEW = "This person has no interview record.";
 
     private final Index targetIndex;
-
+    
+    /**
+     * Constructs a {@code DeleteInterviewCommand} with the specified target index.
+     *
+     * @param targetIndex The index of the person whose interview record is to be deleted.
+     */
     public DeleteInterviewCommand(Index targetIndex) {
         requireNonNull(targetIndex);
         this.targetIndex = targetIndex;
