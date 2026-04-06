@@ -79,19 +79,45 @@ Adds an applicant record to HRdex.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0)
-</div>
+* A person can have any number of tags (including 0).
+* The `PHONE_NUMBER` is the unique id for a specific person, i.e. 2 or more people who shares a `PHONE_NUMBER` leads to an command error.
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+
+Expected output:
+* Command success:
+    * New person added: `NAME`; Phone: `PHONE_NUMBER`; Email: `EMAIL`; Address: `ADDRESS`; Tags: `TAG`…​
+      ![result for 'add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal'](images/expected-output-add-command.png)
+
+* Command fail:
+
+Error Message | Reason
+--------|------------------
+**This person already exists in the address book** | This indicates a person with the specified `PHONE_NUMBER` already exist.
+**Invalid command format!** <br> **add: Adds a person to the address book. Parameters: n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]...** <br> **Example: add n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 t/friends t/owesMoney** | This indicates there is an error in the format of the command.
+
 
 ### Listing all persons : `list`
 
 Shows a list of all persons in the address book.
 
 Format: `list`
+
+* Even if there is any value input after `list`, the command still works.
+
+Expected output:
+* Command success:
+    * Listed all persons:
+      `THE LIST OF ALL PEOPLE`
+      ![result for 'list'](images/expected-output-list-command.png)
+
+* Command fail:
+
+Error Message | Reason
+--------|------------------
+- | -
 
 ### Editing a person : `edit`
 
@@ -109,6 +135,20 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+
+Expected output:
+* Command success:
+    * Edited Person: `NAME`; Phone: `PHONE_NUMBER`; Email: `EMAIL`; Address: `ADDRESS`; Tags: `TAG`…​
+      ![result for 'edit 2 n/Alex Chai'](images/expected-output-edit-command.png)
+
+* Command fail:
+
+Error Message | Reason
+--------|------------------
+**The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
+**At least one field to edit must be provided.** | This indicates there is no edit details provided.
+**Invalid command format!** <br> **edit: Edits the details of the person identified by the index number used in the displayed person list. Existing values will be overwritten by the input values.** <br> **Parameters: INDEX (must be a positive integer) [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...** <br> **Example: edit 1 p/91234567 e/johndoe@example.com** | This indicates there is an error in the format of the command.
+
 
 ### Locating persons by name: `find`
 
@@ -132,6 +172,17 @@ Examples:
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
+Expected output:
+* Command success:
+    * `n` persons listed!
+      `THE LIST OF ALL PEOPLE WITH KEYWORD [MORE_KEYWORDS]`
+
+* Command fail:
+
+Error Message | Reason
+--------|------------------
+**Invalid command format!** <br> **find: Finds all persons whose names contain any of the specified keywords (case-insensitive) and displays them as a list with index numbers.** <br> **Parameters: KEYWORD [MORE_KEYWORDS]...** <br> **Example: find alice bob charlie** | This indicates there is no `KEYWORD` provided after the `find` command.
+
 ### Deleting an applicant record : `delete`
 
 Deletes the specified applicant record from HRdex.
@@ -145,6 +196,19 @@ Format: `delete INDEX`
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+
+Expected output:
+* Command success:
+    * Deleted Person: `NAME`; Phone: `PHONE_NUMBER`; Email: `EMAIL`; Address: `ADDRESS`; Tags: `TAG`…​
+      ![result for 'delete 4'](images/expected-output-delete-command.png)
+
+* Command fail:
+
+Error Message | Reason
+--------|------------------
+**The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
+**At least one field to edit must be provided.** | This indicates there is no edit details provided.
+**Invalid command format!** <br> **delete: Deletes the person identified by the index number used in the displayed person list.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: delete 1** | This indicates there is an error in the format of the command.
 
 ### Adding an interview record : `add-i`
 
@@ -167,17 +231,11 @@ Expected output:
 
 
 * Command fail:
-  * Duplicate `ID`: Interview with this ID already exists: `ID`
 
-    **This indicates the specified `ID` while creating the interview record already exist.**
-
-  * Invalid command format!
-  
-    add-i: Adds a new interview record.
-
-    Format: add-i id/ID d/DATE nt/NOTES
-
-    **This indicates there is an error in the format of the command.**
+Error Message | Reason
+--------|------------------
+**Duplicate `ID`: Interview with this ID already exists: `ID`** | This indicates the specified `ID` while creating the interview record already exist.
+**Invalid command format!** <br> **add-i: Adds a new interview record.** <br> **Format: add-i id/ID d/DATE nt/NOTES** | This indicates there is an error in the format of the command.
 
 ### Deleting an interview record : `delete-i`
 
@@ -200,19 +258,11 @@ Expected output:
 
 
 * Command fail:
-    * No interview record found with ID: `ID`
 
-      **This indicates interview record with the specified `ID` doesn't exist and thus can't be deleted.**
-
-    * Invalid command format!
-
-      delete-i: Deletes an interview record and removes it from all linked persons.
-
-      Parameters: ID
-
-      Example: delete-i I-007
-
-      **This indicates there is an error in the format of the command.**
+Error Message | Reason
+--------|------------------
+**No interview record found with ID: `ID`** | This indicates interview record with the specified `ID` doesn't exist and thus can't be deleted.
+**Invalid command format!** <br> **delete-i: Deletes an interview record and removes it from all linked persons.** <br> **Parameters: ID** <br> **Example: delete-i I-007** | This indicates there is an error in the format of the command.
 
 ### Linking an existing interview record : `link-i`
 
@@ -235,25 +285,13 @@ Expected output:
 
 
 * Command fail:
-    * Please provide both person index and interview ID.
 
-      **This indicates the provided data isn't sufficient for the command. Either `INDEX` or `ID` isn't provided.**
-
-    * Invalid person index: `INDEX`
-
-      **This indicates the `INDEX` provided is invalid.**
-
-    * No interview record with ID: `ID`
-
-      **This indicates there is no existing interview record with id `ID`, thus the command can't be executed.**
-
-    * Invalid command format!
-
-      link-i: Links an existing interview record to the person.
-
-      Parameters: INDEX ID Example: link-i 1 I-001
-
-      **This indicates there is an error in the format of the command.**
+Error Message | Reason
+--------|------------------
+**Please provide both person index and interview ID.** | This indicates the provided data isn't sufficient for the command. Either `INDEX` or `ID` isn't provided.
+**Invalid person index: `INDEX`** | This indicates the `INDEX` provided is invalid.
+**No interview record with ID: `ID`** | This indicates there is no existing interview record with id `ID`, thus the command can't be executed.
+**Invalid command format!** <br> **link-i: Links an existing interview record to the person.** <br> **Parameters: INDEX ID Example: link-i 1 I-001** | This indicates there is an error in the format of the command.
 
 ### Removing a linked interview record from a person : `remove-i`
 
@@ -276,23 +314,12 @@ Expected output:
 
 
 * Command fail:
-    * The person index provided is invalid
 
-      **This indicates the `INDEX` provided is invalid.**
-
-    * The interview record index provided is invalid.
-
-      **This indicates there is no interview record linked to the person with id `ID`, thus the command can't be executed.**
-
-    * Invalid command format!
-
-      remove-i: Removes an interview record from the person identified by the index number used in the displayed person list.
-
-      Parameters: INDEX ID
-
-      Example: remove-i 1 I-001
-
-      **This indicates there is an error in the format of the command.**
+Error Message | Reason
+--------|------------------
+**The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
+**The interview record index provided is invalid.** | This indicates there is no interview record linked to the person with id `ID`, thus the command can't be executed.
+**Invalid command format!** <br> **remove-i: Removes an interview record from the person identified by the index number used in the displayed person list.** <br> **Parameters: INDEX ID** <br> **Example: remove-i 1 I-001** | This indicates there is an error in the format of the command.
 
 ### List all interview records : `list-i`
 
@@ -309,9 +336,10 @@ Expected output:
 
 
 * Command fail:
-    * list-i command does not take any arguments.
 
-      **This indicates there is an error in the format of the command. There shouldn't be any arguments after `list-i`**
+Error Message | Reason
+--------|------------------
+**list-i command does not take any arguments.** | This indicates there is an error in the format of the command. There shouldn't be any arguments after `list-i`
 
 ### Clearing all entries : `clear`
 
@@ -368,9 +396,9 @@ Action | Format, Examples
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`or `find A1234567B`
 **List** | `list`
-**addInterviewRecord** | `addInterviewRecord [id/ID] [d/DATE] [nt/NOTES]`<br> e.g.,`addInterviewRecord id/I-001 d/2026-04-17 nt/Shows excellent communication skill`
-**deleteInterviewRecord** | `deleteInterviewRecord [ID]`<br> e.g.,`deleteInterviewRecord I-001`
-**linkInterviewRecord** | `linkInterviewRecord [INDEX] [ID]`<br> e.g.,`linkInterviewRecord 1 I-001`
-**removeInterviewRecord** | `removeInterviewRecord [INDEX] [ID]`<br> e.g.,`removeInterviewRecord 1 I-001`
-**listInterviews** | `listInterviews`
+**Add Interview Record** | `add-i [id/ID] [d/DATE] [nt/NOTES]`<br> e.g.,`addInterviewRecord id/I-001 d/2026-04-17 nt/Shows excellent communication skill`
+**Delete Interview Record** | `delete-i [ID]`<br> e.g.,`deleteInterviewRecord I-001`
+**Link Interview Record** | `link-i [INDEX] [ID]`<br> e.g.,`linkInterviewRecord 1 I-001`
+**Unlink Interview Record** | `remove-i [INDEX] [ID]`<br> e.g.,`removeInterviewRecord 1 I-001`
+**Interview List** | `list-i`
 **Help** | `help`
