@@ -220,7 +220,11 @@ Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Sinc
 
 ![UndoRedoState5](images/UndoRedoState5.png)
 
-Step 7. The user executes `add-i id/I-001 …​` to add a new interview record into the interview list. The `add-i` command then calls `Model#commitAddressBook()`, causing the modified address book state to be saved into the `addressBookStateList`.
+### \[Implemented\] Deleting/Removing interview record feature
+
+#### Implementation
+
+Step 1. The user executes `add-i id/I-001 …​` to add a new interview record into the interview list. The `add-i` command then calls `Model#commitAddressBook()`, causing the modified address book state to be saved into the `addressBookStateList`.
 
 ![UndoRedoState5](images/UndoRedoState6.png)
 
