@@ -8,28 +8,21 @@ import java.util.Objects;
 public class InterviewRecord {
 
     private final String id;
-    private final String date;
     private final String notes;
 
     /**
      * Creates an interview record.
      *
-     * @param id The unique id of the interview record.
-     * @param date The interview date.
+     * @param id    The unique id of the interview record.
      * @param notes The interview notes.
      */
-    public InterviewRecord(String id, String date, String notes) {
+    public InterviewRecord(String id, String notes) {
         this.id = Objects.requireNonNull(id);
-        this.date = Objects.requireNonNull(date);
         this.notes = Objects.requireNonNull(notes);
     }
 
     public String getId() {
         return id;
-    }
-
-    public String getDate() {
-        return date;
     }
 
     public String getNotes() {
@@ -48,18 +41,17 @@ public class InterviewRecord {
 
         InterviewRecord otherRecord = (InterviewRecord) other;
         return id.equals(otherRecord.id)
-                && date.equals(otherRecord.date)
                 && notes.equals(otherRecord.notes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, notes);
+        return Objects.hash(id, notes);
     }
 
     @Override
     public String toString() {
-        return id + " | " + date + " | " + notes;
+        return id + " | " + notes;
     }
 }
 

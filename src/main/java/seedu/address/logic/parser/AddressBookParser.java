@@ -9,19 +9,17 @@ import java.util.regex.Pattern;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.AddCommand;
-import seedu.address.logic.commands.AddInterviewRecordCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.logic.commands.DeleteInterviewRecordCommand;
+import seedu.address.logic.commands.DeleteInterviewCommand;
 import seedu.address.logic.commands.EditCommand;
+import seedu.address.logic.commands.EditInterviewCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
-import seedu.address.logic.commands.LinkInterviewRecordCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.ListInterviewsCommand;
-import seedu.address.logic.commands.RemoveInterviewRecordCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -64,8 +62,14 @@ public class AddressBookParser {
         case EditCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);
 
+        case EditInterviewCommand.COMMAND_WORD:
+            return new EditInterviewCommandParser().parse(arguments);
+
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
+
+        case DeleteInterviewCommand.COMMAND_WORD:
+            return new DeleteInterviewCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
@@ -82,20 +86,8 @@ public class AddressBookParser {
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
 
-        case LinkInterviewRecordCommand.COMMAND_WORD:
-            return new LinkInterviewRecordCommandParser().parse(arguments);
-
-        case RemoveInterviewRecordCommand.COMMAND_WORD:
-            return new RemoveInterviewRecordCommandParser().parse(arguments);
-
-        case AddInterviewRecordCommand.COMMAND_WORD:
-            return new AddInterviewRecordCommandParser().parse(arguments);
-
-        case DeleteInterviewRecordCommand.COMMAND_WORD:
-            return new DeleteInterviewRecordCommandParser().parse(arguments);
-
         case ListInterviewsCommand.COMMAND_WORD:
-            return new ListInterviewsCommandParser().parse(arguments);
+            return new ListInterviewsCommand();
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);

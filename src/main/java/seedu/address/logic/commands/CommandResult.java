@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.person.Person;
 
 /**
  * Represents the result of a command execution.
@@ -19,6 +20,12 @@ public class CommandResult {
     /** The application should exit. */
     private final boolean exit;
 
+    /** The interview editor popup should be shown for this person. */
+    private final boolean showInterviewEditor;
+
+    /** The person to edit interview notes for (non-null when showInterviewEditor is true). */
+    private final Person interviewPerson;
+
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
@@ -26,6 +33,8 @@ public class CommandResult {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = exit;
+        this.showInterviewEditor = false;
+        this.interviewPerson = null;
     }
 
     /**
@@ -34,6 +43,18 @@ public class CommandResult {
      */
     public CommandResult(String feedbackToUser) {
         this(feedbackToUser, false, false);
+    }
+
+    /**
+     * Constructs a {@code CommandResult} that signals the UI to open the interview editor
+     * for the given person.
+     */
+    public CommandResult(String feedbackToUser, Person interviewPerson) {
+        this.feedbackToUser = requireNonNull(feedbackToUser);
+        this.showHelp = false;
+        this.exit = false;
+        this.showInterviewEditor = true;
+        this.interviewPerson = requireNonNull(interviewPerson);
     }
 
     public String getFeedbackToUser() {
@@ -46,6 +67,14 @@ public class CommandResult {
 
     public boolean isExit() {
         return exit;
+    }
+
+    public boolean isShowInterviewEditor() {
+        return showInterviewEditor;
+    }
+
+    public Person getInterviewPerson() {
+        return interviewPerson;
     }
 
     @Override
@@ -62,12 +91,14 @@ public class CommandResult {
         CommandResult otherCommandResult = (CommandResult) other;
         return feedbackToUser.equals(otherCommandResult.feedbackToUser)
                 && showHelp == otherCommandResult.showHelp
-                && exit == otherCommandResult.exit;
+                && exit == otherCommandResult.exit
+                && showInterviewEditor == otherCommandResult.showInterviewEditor
+                && Objects.equals(interviewPerson, otherCommandResult.interviewPerson);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit);
+        return Objects.hash(feedbackToUser, showHelp, exit, showInterviewEditor, interviewPerson);
     }
 
     @Override
@@ -76,6 +107,7 @@ public class CommandResult {
                 .add("feedbackToUser", feedbackToUser)
                 .add("showHelp", showHelp)
                 .add("exit", exit)
+                .add("showInterviewEditor", showInterviewEditor)
                 .toString();
     }
 

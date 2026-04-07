@@ -14,21 +14,17 @@ class JsonAdaptedInterviewRecord {
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "InterviewRecord's %s field is missing!";
 
     private final String id;
-    private final String date;
     private final String notes;
 
     @JsonCreator
     public JsonAdaptedInterviewRecord(@JsonProperty("id") String id,
-                                      @JsonProperty("date") String date,
                                       @JsonProperty("notes") String notes) {
         this.id = id;
-        this.date = date;
         this.notes = notes;
     }
 
     public JsonAdaptedInterviewRecord(InterviewRecord source) {
         id = source.getId();
-        date = source.getDate();
         notes = source.getNotes();
     }
 
@@ -41,14 +37,11 @@ class JsonAdaptedInterviewRecord {
         if (id == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "id"));
         }
-        if (date == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "date"));
-        }
         if (notes == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "notes"));
         }
 
-        return new InterviewRecord(id, date, notes);
+        return new InterviewRecord(id, notes);
     }
 }
 

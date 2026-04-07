@@ -3,6 +3,7 @@ package seedu.address.logic;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Path;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -16,6 +17,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.interview.InterviewDatabase;
+import seedu.address.model.interview.InterviewRecord;
 import seedu.address.model.person.Person;
 import seedu.address.storage.Storage;
 
@@ -90,5 +92,30 @@ public class LogicManager implements Logic {
     @Override
     public void setGuiSettings(GuiSettings guiSettings) {
         model.setGuiSettings(guiSettings);
+    }
+
+    @Override
+    public void saveInterviewNotes(Person person, String notes) {
+        InterviewDatabase db = model.getInterviewDatabase();
+        String id;
+
+        if (!person.getInterviewIds().isEmpty()) {
+            // Reuse existing ID, replace the record in the DB
+            id = person.getInterviewIds().get(0);
+            db.removeInterviewRecord(id);
+        } else {
+            // New interview — generate an ID and link it to the person
+            id = UUID.randomUUID().toString();
+            Person updatedPerson = person.addInterviewRecord(id);
+            model.setPerson(person, updatedPerson);
+        }
+
+        db.addInterviewRecord(new InterviewRecord(id, notes));
+
+        try {
+            storage.saveAddressBook(model.getAddressBook());
+        } catch (IOException e) {
+            logger.warning("Failed to save address book after saving interview notes: " + e.getMessage());
+        }
     }
 }

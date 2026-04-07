@@ -66,6 +66,9 @@ class MainWindow {
                 if (commandResult.isExit()) {
                     handleExit();
                 }
+                if (commandResult.isShowInterviewEditor()) {
+                    handleInterviewEdit(commandResult.getInterviewPerson());
+                }
                 return commandResult;
             } catch (CommandException | ParseException e) {
                 // Show specific message in result box and re-throw to trigger red text
@@ -113,6 +116,27 @@ class MainWindow {
 
     public void show() {
         primaryStage.show();
+    }
+
+    public void handleInterviewEdit(seedu.address.model.person.Person person) {
+        // Resolve existing notes from the person's first interview record (if any)
+        String existingNotes = person.getInterviewIds().stream()
+                .findFirst()
+                .map(id -> logic.getInterviewDatabase().getInterviewRecord(id))
+                .filter(java.util.Objects::nonNull)
+                .map(record -> record.getNotes())
+                .orElse("");
+
+        InterviewEditWindow window = new InterviewEditWindow(
+                primaryStage,
+                person,
+                existingNotes,
+                notes -> {
+                    logic.saveInterviewNotes(person, notes);
+                    updatePersons(logic.getFilteredPersonList());
+                }
+        );
+        window.showAndWait();
     }
 
     public void handleHelp() {

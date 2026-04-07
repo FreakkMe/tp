@@ -53,4 +53,14 @@ public interface Logic {
      * Set the user prefs' GUI settings.
      */
     void setGuiSettings(GuiSettings guiSettings);
+
+    /**
+     * Saves interview notes for the given person.
+     * If the person already has an interview record, it is replaced.
+     * If not, a new record is created and linked to the person.
+     *
+     * @param person The person whose interview notes are being saved.
+     * @param notes  The notes text to save.
+     */
+    void saveInterviewNotes(Person person, String notes);
 }
