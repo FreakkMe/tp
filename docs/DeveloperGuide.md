@@ -239,7 +239,7 @@ Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Sinc
 
 Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
 
-![UndoRedoState0](images/UndoRedoState0.png)
+![EditDeleteInitialState](images/EditDeleteInitialState.png)
 
 Step 2. The user executes `edit-i 1` to open the interview notes editor for the person at index 1. The `edit-i` command parses and validates the `index`, retrieves the corresponding `Person`, and returns a `CommandResult` that signals the `UI` to show the interview editor. The `edit-i` command does not call `Model#commitAddressBook()`, so the `currentStatePointer` is still pointing to the single address book state.
 
