@@ -397,8 +397,6 @@ Action | Format, Examples
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`or `find A1234567B`
 **List** | `list`
 **Add Interview Record** | `add-i [id/ID] [d/DATE] [nt/NOTES]`<br> e.g.,`addInterviewRecord id/I-001 d/2026-04-17 nt/Shows excellent communication skill`
-**Delete Interview Record** | `delete-i [ID]`<br> e.g.,`deleteInterviewRecord I-001`
-**Link Interview Record** | `link-i [INDEX] [ID]`<br> e.g.,`linkInterviewRecord 1 I-001`
-**Unlink Interview Record** | `remove-i [INDEX] [ID]`<br> e.g.,`removeInterviewRecord 1 I-001`
+**Delete Interview Record** | `delete-i [ID]`<br> e.g.,`delete-i 1`
 **Interview List** | `list-i`
 **Help** | `help`
