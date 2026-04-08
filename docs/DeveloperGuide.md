@@ -115,24 +115,37 @@ How the parsing works:
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+![Model class diagram](images/ModelClassDiagram.png)
 
-<img src="images/ModelClassDiagram.png" width="450" />
+API : [`Model.java`](https://github.com/AY2526S2-CS2103T-T14-3/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
+The `Model` component stores and manages the application's in-memory data.
 
 The `Model` component,
+* stores all applicant data as `Person` objects.
+* stores all interview records separately in an `InterviewDatabase`.
+* maintains the association between an applicant and the applicant's interview records using interview record IDs stored in each `Person`.
+* stores a filtered list of `Person` objects as an unmodifiable `ObservableList<Person>` for the UI to observe.
+* stores a `UserPrefs` object that represents the user's preferences.
+* exposes controlled access to internal data through the `Model` API.
+* does not depend on the `Ui`, `Logic`, or `Storage` components.
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
-* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
-* does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
+`ModelManager` implements the `Model` interface and acts as the central coordinator of the model. It manages the main data structures used by the application, including the `AddressBook`, `UserPrefs`, and the filtered person list.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
+The `AddressBook` serves as the main in-memory data container. Besides storing the list of applicants, it also stores an `InterviewDatabase`, which keeps all `InterviewRecord` objects in the system.
 
-<img src="images/BetterModelClassDiagram.png" width="450" />
+The `InterviewDatabase` manages interview records centrally. Each interview record is uniquely identified by an ID and can be retrieved efficiently using that ID. This allows interview records to be created, updated, and removed independently of the applicant list.
 
-</div>
+Instead of storing full `InterviewRecord` objects inside each `Person`, each `Person` stores only a list of interview record IDs. This design reduces duplication, keeps applicant data lightweight, and makes interview record management more scalable and maintainable.
 
+<box type="info" seamless>
+
+**Design consideration:**  
+An alternative design was to store full `InterviewRecord` objects directly inside each `Person`.
+
+We chose to store interview records separately in an `InterviewDatabase` and let each `Person` keep only the corresponding interview record IDs instead. This avoids duplication of interview data and allows interview records to be updated, removed, and managed independently of applicant data.
+
+</box>
 
 ### Storage component
 
