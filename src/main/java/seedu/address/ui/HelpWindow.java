@@ -32,6 +32,13 @@ public class HelpWindow extends UiPart<Stage> {
         private final String format;
         private final String description;
 
+        /**
+        * Creates a command entry for display in the help window.
+        *
+        * @param command The command name.
+        * @param format The command format.
+        * @param description The command description.
+        */
         public CommandEntry(String command, String format, String description) {
             this.command = command;
             this.format = format;
