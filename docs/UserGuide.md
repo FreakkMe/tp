@@ -270,6 +270,33 @@ Error Message | Reason
 --------|------------------
 - | -
 
+### Finding interview records by keyword : `find-i`
+
+Finds applicants whose interview records contain specific keywords.
+
+Format: `find-i KEYWORD [MORE_KEYWORDS]`
+
+* The search is case-insensitive. e.g. `java` will match `Java`
+* The search checks the content of interview records entered in the popup window.
+* Applicants whose interview records contain any of the given keywords will be displayed.
+* Only full keywords are matched based on substring search.
+
+Examples:
+* `find-i java`
+* `find-i communication teamwork`
+
+Expected output:
+
+* Command success:
+    * `n` persons listed!
+      `THE LIST OF MATCHING APPLICANTS`
+
+* Command fail:
+
+Error Message | Reason
+--- | ---
+Invalid command format! | No keyword is provided after the command.
+
 ### Clearing all entries : `clear`
 
 Clears all entries in the address book.
@@ -340,4 +367,5 @@ Action | Format, Examples
 **Interview List** | `list-i`
 **Edit Interview Record** | `edit-i INDEX`<br> e.g., `edit-i 1`
 **Delete Interview Record** | `delete-i INDEX`<br> e.g., `delete-i 1`
+**Find Interview Record** | `find-i KEYWORD [MORE_KEYWORDS]`<br> e.g., `find-i java`
 **Help** | `help`
