@@ -75,6 +75,94 @@ public class PersonContainsKeywordsPredicateTest {
     }
 
     @Test
+    public void test_structuralKeywords_returnsFalse() {
+        // Searching toString() labels should NOT match anyone — these are bugs if they return true
+        PersonContainsKeywordsPredicate predicate =
+                new PersonContainsKeywordsPredicate(Collections.singletonList("Person"));
+        assertFalse(predicate.test(new PersonBuilder().withName("Alice").build()));
+
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("name"));
+        assertFalse(predicate.test(new PersonBuilder().withName("Alice").build()));
+
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("phone"));
+        assertFalse(predicate.test(new PersonBuilder().withName("Alice").build()));
+
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("email"));
+        assertFalse(predicate.test(new PersonBuilder().withName("Alice").build()));
+
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("address"));
+        assertFalse(predicate.test(new PersonBuilder().withName("Alice").build()));
+
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("tags"));
+        assertFalse(predicate.test(new PersonBuilder().withName("Alice").build()));
+    }
+
+    @Test
+    public void test_phoneContainsKeywords_returnsTrue() {
+        PersonContainsKeywordsPredicate predicate =
+                new PersonContainsKeywordsPredicate(Collections.singletonList("91234567"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("91234567").build()));
+
+        // Partial phone number match
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("9123"));
+        assertTrue(predicate.test(new PersonBuilder().withPhone("91234567").build()));
+    }
+
+    @Test
+    public void test_emailContainsKeywords_returnsTrue() {
+        PersonContainsKeywordsPredicate predicate =
+                new PersonContainsKeywordsPredicate(Collections.singletonList("alice@example.com"));
+        assertTrue(predicate.test(new PersonBuilder().withEmail("alice@example.com").build()));
+
+        // Partial email match
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("alice"));
+        assertTrue(predicate.test(new PersonBuilder().withEmail("alice@example.com").build()));
+
+        // Case-insensitive
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("ALICE@EXAMPLE.COM"));
+        assertTrue(predicate.test(new PersonBuilder().withEmail("alice@example.com").build()));
+    }
+
+    @Test
+    public void test_addressContainsKeywords_returnsTrue() {
+        PersonContainsKeywordsPredicate predicate =
+                new PersonContainsKeywordsPredicate(Collections.singletonList("Clementi"));
+        assertTrue(predicate.test(new PersonBuilder().withAddress("123 Clementi Ave").build()));
+
+        // Mixed-case
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("cLeMeNtI"));
+        assertTrue(predicate.test(new PersonBuilder().withAddress("123 Clementi Ave").build()));
+    }
+
+    @Test
+    public void test_tagContainsKeywords_returnsTrue() {
+        PersonContainsKeywordsPredicate predicate =
+                new PersonContainsKeywordsPredicate(Collections.singletonList("friends"));
+        assertTrue(predicate.test(new PersonBuilder().withTags("friends").build()));
+
+        // Mixed-case
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("fRiEnDs"));
+        assertTrue(predicate.test(new PersonBuilder().withTags("friends").build()));
+
+        // One of multiple tags matches
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("colleagues"));
+        assertTrue(predicate.test(new PersonBuilder().withTags("friends", "colleagues").build()));
+    }
+
+    @Test
+    public void test_keywordMatchesNoField_returnsFalse() {
+        PersonContainsKeywordsPredicate predicate =
+                new PersonContainsKeywordsPredicate(Collections.singletonList("zzznomatch"));
+        assertFalse(predicate.test(new PersonBuilder()
+                .withName("Alice")
+                .withPhone("91234567")
+                .withEmail("alice@example.com")
+                .withAddress("123 Clementi Ave")
+                .withTags("friends")
+                .build()));
+    }
+
+    @Test
     public void toStringMethod() {
         List<String> keywords = List.of("keyword1", "keyword2");
         PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(keywords);
