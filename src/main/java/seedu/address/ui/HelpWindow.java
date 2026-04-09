@@ -41,11 +41,11 @@ public class HelpWindow extends UiPart<Stage> {
         public String getCommand() {
             return command;
         }
-        
+
         public String getFormat() {
             return format;
         }
-        
+
         public String getDescription() {
             return description;
         }
