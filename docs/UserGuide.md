@@ -183,143 +183,63 @@ Error Message | Reason
 --------|------------------
 **Invalid command format!** <br> **find: Finds all persons whose names contain any of the specified keywords (case-insensitive) and displays them as a list with index numbers.** <br> **Parameters: KEYWORD [MORE_KEYWORDS]...** <br> **Example: find alice bob charlie** | This indicates there is no `KEYWORD` provided after the `find` command.
 
-### Deleting an applicant record : `delete`
+### Editing an interview record : `edit-i`
 
-Deletes the specified applicant record from HRdex.
+Edits the interview record of an applicant in HRdex.
 
-Format: `delete INDEX`
+Format: `edit-i INDEX`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+* Opens a popup window for the applicant at the specified `INDEX`.
+* The index refers to the index number shown in the displayed applicant list.
+* The index must be a positive integer `1, 2, 3, ...`
+* The popup window allows the user to enter or modify the interview record content for that applicant.
+* The interview record behaves like a memo or note attached to the applicant.
+* If the applicant already has an interview record, the existing content will be shown in the popup window and can be edited.
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `edit-i 1`
+* `find Alex` followed by `edit-i 1`
 
 Expected output:
+
 * Command success:
-    * Deleted Person: `NAME`; Phone: `PHONE_NUMBER`; Email: `EMAIL`; Address: `ADDRESS`; Tags: `TAG`…​
-      ![result for 'delete 4'](images/expected-output-delete-command.png)
+    * A popup window is opened for the specified applicant, allowing the user to create or edit the interview record.
 
 * Command fail:
 
 Error Message | Reason
---------|------------------
-**The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
-**At least one field to edit must be provided.** | This indicates there is no edit details provided.
-**Invalid command format!** <br> **delete: Deletes the person identified by the index number used in the displayed person list.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: delete 1** | This indicates there is an error in the format of the command.
-
-### Adding an interview record : `add-i`
-
-Adds an interview record to the address book.
-
-Format: `add-i id/ID d/DATE nt/NOTES`
-
-* Adds an interview record with the specified `ID`, `DATE`, and `NOTES`.
-* The index is a string that is used to identify the specific interview record.
-* The `ID` **can be any string without spaces**.
-* If the command is used to add an interview record with an existing `ID`, the command will be cancelled.
-
-Examples:
-* `add-i id/I-001 d/2026-04-17 nt/Shows excellent communication skill` adds an interview record with id `I-001`, date `2026-04-17`, and remarks `Shows excellent communication skill`.
-* `add-i id/I-002 d/2026-04-18 nt/Expert in Java` adds an interview record with id `I-002`, date `2026-04-18`, and remarks `Expert in Java`.
-
-Expected output:
-* Command success:
-  * New interview added: `ID` | `DATE` | `NOTES`
-
-
-* Command fail:
-
-Error Message | Reason
---------|------------------
-**Duplicate `ID`: Interview with this ID already exists: `ID`** | This indicates the specified `ID` while creating the interview record already exist.
-**Invalid command format!** <br> **add-i: Adds a new interview record.** <br> **Format: add-i id/ID d/DATE nt/NOTES** | This indicates there is an error in the format of the command.
+--- | ---
+The person index provided is invalid | This indicates the `INDEX` provided does not correspond to any applicant in the currently displayed list.
+Invalid command format! | This indicates there is an error in the format of the command.
 
 ### Deleting an interview record : `delete-i`
 
-Deletes an interview record in the address book.
+Deletes the interview record content of an applicant in HRdex.
 
-Format: `delete-i ID`
+Format: `delete-i INDEX`
 
-* Deletes an interview record with the specified `ID`.
-* If there is person(s) linked to the interview that is deleted, automatically removes the interview from that person(s).
-* The `ID` is the exact id used in generating the interview record.
-* If the command is used to delete an interview record that doesn't exist, the command will be cancelled.
+* Deletes the interview record content of the applicant at the specified `INDEX`.
+* The index refers to the index number shown in the displayed applicant list.
+* The index must be a positive integer `1, 2, 3, ...`
+* This command removes the interview note content associated with that applicant.
+* If the applicant does not have any interview record content, the command will be rejected.
 
 Examples:
-* `delete-i I-001` deletes an interview record with id `I-001`.
-* `delete-i I-002` deletes an interview record with id `I-002`.
+* `delete-i 1`
+* `find Alex` followed by `delete-i 1`
 
 Expected output:
-* Command success:
-    * Deleted interview record: `ID`
 
+* Command success:
+    * The interview record content of the specified applicant is deleted.
 
 * Command fail:
 
 Error Message | Reason
---------|------------------
-**No interview record found with ID: `ID`** | This indicates interview record with the specified `ID` doesn't exist and thus can't be deleted.
-**Invalid command format!** <br> **delete-i: Deletes an interview record and removes it from all linked persons.** <br> **Parameters: ID** <br> **Example: delete-i I-007** | This indicates there is an error in the format of the command.
-
-### Linking an existing interview record : `link-i`
-
-Links an existing interview record to an existing person in the address book.
-
-Format: `link-i INDEX ID`
-
-* Links an interview record with the specified `ID` to a person with the specified `INDEX`.
-* The `INDEX` is the index number shown in the displayed person list and the `ID` is the exact id used in generating the interview record.
-* The `INDEX` **must be a positive integer** 1, 2, 3, …​ and the `ID` is the exact id used in generating the interview record.
-* If the command is used to link an interview record to a person which either of them that doesn't exist, the command will be cancelled.
-
-Examples:
-* `link-i 1 I-001` followed by `list` links an interview record with id `I-001` to the first person in the address book.
-* `link-i 2 I-002` followed by `find Alex` links an interview record with id `I-002` to the second person in the address book with name Alex.
-
-Expected output:
-* Command success:
-    * Interview record linked to: `ID`
-
-
-* Command fail:
-
-Error Message | Reason
---------|------------------
-**Please provide both person index and interview ID.** | This indicates the provided data isn't sufficient for the command. Either `INDEX` or `ID` isn't provided.
-**Invalid person index: `INDEX`** | This indicates the `INDEX` provided is invalid.
-**No interview record with ID: `ID`** | This indicates there is no existing interview record with id `ID`, thus the command can't be executed.
-**Invalid command format!** <br> **link-i: Links an existing interview record to the person.** <br> **Parameters: INDEX ID Example: link-i 1 I-001** | This indicates there is an error in the format of the command.
-
-### Removing a linked interview record from a person : `remove-i`
-
-Removes a linked interview record from the person in the address book.
-
-Format: `remove-i INDEX ID`
-
-* Removes an interview record with the specified `ID` which is already linked to a person with the specified `INDEX`.
-* The `INDEX` is the index number shown in the displayed person list and the `ID` is the exact id used in generating the interview record.
-* The `INDEX` **must be a positive integer** 1, 2, 3, …​ and the `ID` is the exact id used in generating the interview record
-* If the command is used to remove an interview record from a person which either of them that doesn't exist, the command will be cancelled.
-
-Examples:
-* `remove-i 1 I-001` followed by `list` removes an interview record with id `I-001` from the first person in the address book.
-* `remove-i 2 I-002` followed by `find Alex` removes an interview record with id `I-002` from the second person in the address book with name Alex.
-
-Expected output:
-* Command success:
-    * Interview record removed from: `NAME`; Phone: `PHONE`; Email: `EMAIL`; Address: `ADDRESS`; Tags: `TAGS`
-
-
-* Command fail:
-
-Error Message | Reason
---------|------------------
-**The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
-**The interview record index provided is invalid.** | This indicates there is no interview record linked to the person with id `ID`, thus the command can't be executed.
-**Invalid command format!** <br> **remove-i: Removes an interview record from the person identified by the index number used in the displayed person list.** <br> **Parameters: INDEX ID** <br> **Example: remove-i 1 I-001** | This indicates there is an error in the format of the command.
+--- | ---
+The person index provided is invalid | This indicates the `INDEX` provided does not correspond to any applicant in the currently displayed list.
+No interview record found for this applicant | This indicates the specified applicant does not currently have any interview record content to delete.
+Invalid command format! | This indicates there is an error in the format of the command.
 
 ### List all interview records : `list-i`
 
@@ -396,9 +316,7 @@ Action | Format, Examples
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`or `find A1234567B`
 **List** | `list`
-**Add Interview Record** | `add-i [id/ID] [d/DATE] [nt/NOTES]`<br> e.g.,`addInterviewRecord id/I-001 d/2026-04-17 nt/Shows excellent communication skill`
-**Delete Interview Record** | `delete-i [ID]`<br> e.g.,`deleteInterviewRecord I-001`
-**Link Interview Record** | `link-i [INDEX] [ID]`<br> e.g.,`linkInterviewRecord 1 I-001`
-**Unlink Interview Record** | `remove-i [INDEX] [ID]`<br> e.g.,`removeInterviewRecord 1 I-001`
 **Interview List** | `list-i`
+**Edit Interview Record** | `edit-i INDEX`<br> e.g., `edit-i 1`
+**Delete Interview Record** | `delete-i INDEX`<br> e.g., `delete-i 1`
 **Help** | `help`
