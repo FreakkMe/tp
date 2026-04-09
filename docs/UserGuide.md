@@ -184,26 +184,24 @@ Error Message | Reason
 --------|------------------
 **Invalid command format!** <br> **find: Finds all persons whose names contain any of the specified keywords (case-insensitive) and displays them as a list with index numbers.** <br> **Parameters: KEYWORD [MORE_KEYWORDS]...** <br> **Example: find alice bob charlie** | This indicates there is no `KEYWORD` provided after the `find` command.
 
-### Deleting an applicant record : `delete`
+### Editing an interview record : `edit-i`
 
-Deletes the specified applicant record from HRdex.
+Edits the interview record of an applicant in HRdex.
 
-Format: `delete INDEX`
+Format: `edit-i INDEX`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+* Opens a popup window for the applicant at the specified `INDEX`.
+* The index refers to the index number shown in the displayed applicant list.
+* The index must be a positive integer `1, 2, 3, ...`
+* The popup window allows the user to enter or modify the interview record content for that applicant.
+* The interview record behaves like a memo or note attached to the applicant.
+* If the applicant already has an interview record, the existing content will be shown in the popup window and can be edited.
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `edit-i 1`
+* `find Alex` followed by `edit-i 1`
 
 Expected output:
-* Command success:
-    * Deleted Person: `NAME`; Phone: `PHONE_NUMBER`; Email: `EMAIL`; Address: `ADDRESS`; Tags: `TAG`…​
-      ![result for 'delete 4'](images/expected-output-delete-command.png)
-
-* Command fail:
 
 Error Message | Reason
 --------|------------------
@@ -361,9 +359,7 @@ Action | Format, Examples
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`or `find A1234567B`
 **List** | `list`
-**Add Interview Record** | `add-i [id/ID] [d/DATE] [nt/NOTES]`<br> e.g.,`addInterviewRecord id/I-001 d/2026-04-17 nt/Shows excellent communication skill`
-**Delete Interview Record** | `delete-i [ID]`<br> e.g.,`deleteInterviewRecord I-001`
-**Link Interview Record** | `link-i [INDEX] [ID]`<br> e.g.,`linkInterviewRecord 1 I-001`
-**Unlink Interview Record** | `remove-i [INDEX] [ID]`<br> e.g.,`removeInterviewRecord 1 I-001`
 **Interview List** | `list-i`
+**Edit Interview Record** | `edit-i INDEX`<br> e.g., `edit-i 1`
+**Delete Interview Record** | `delete-i INDEX`<br> e.g., `delete-i 1`
 **Help** | `help`

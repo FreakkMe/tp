@@ -115,35 +115,68 @@ How the parsing works:
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+![Model class diagram](images/ModelClassDiagram.png)
 
-<img src="images/ModelClassDiagram.png" width="450" />
+API : [`Model.java`](https://github.com/AY2526S2-CS2103T-T14-3/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
+The `Model` component stores and manages the application's in-memory data.
 
 The `Model` component,
+* stores all applicant data as `Person` objects.
+* stores all interview records separately in an `InterviewDatabase`.
+* maintains the association between an applicant and the applicant's interview records using interview record IDs stored in each `Person`.
+* stores a filtered list of `Person` objects as an unmodifiable `ObservableList<Person>` for the UI to observe.
+* stores a `UserPrefs` object that represents the user's preferences.
+* exposes controlled access to internal data through the `Model` API.
+* does not depend on the `Ui`, `Logic`, or `Storage` components.
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
-* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
-* does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
+`ModelManager` implements the `Model` interface and acts as the central coordinator of the model. It manages the main data structures used by the application, including the `AddressBook`, `UserPrefs`, and the filtered person list.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
+The `AddressBook` serves as the main in-memory data container. Besides storing the list of applicants, it also stores an `InterviewDatabase`, which keeps all `InterviewRecord` objects in the system.
 
-<img src="images/BetterModelClassDiagram.png" width="450" />
+The `InterviewDatabase` manages interview records centrally. Each interview record is uniquely identified by an ID and can be retrieved efficiently using that ID. This allows interview records to be created, updated, and removed independently of the applicant list.
 
-</div>
+Instead of storing full `InterviewRecord` objects inside each `Person`, each `Person` stores only a list of interview record IDs. This design reduces duplication, keeps applicant data lightweight, and makes interview record management more scalable and maintainable.
 
+<box type="info" seamless>
 
-### Storage component
+**Design consideration:**  
+An alternative design was to store full `InterviewRecord` objects directly inside each `Person`.
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+We chose to store interview records separately in an `InterviewDatabase` and let each `Person` keep only the corresponding interview record IDs instead. This avoids duplication of interview data and allows interview records to be updated, removed, and managed independently of applicant data.
 
-<img src="images/StorageClassDiagram.png" width="550" />
+</box>
+
+## Storage component
+
+API : [`Storage.java`](https://github.com/AY2526S2-CS2103T-T14-3/tp/blob/master/src/main/java/seedu/address/storage/Storage.java)
+
+![Storage Diagram](images/StorageDiagram.png)
+
+The `Storage` component is responsible for saving application data to local storage and loading it back when the application starts.
 
 The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
-* depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
+* can save both applicant data and user preferences in JSON format, and read them back into corresponding objects.
+* stores all `Person` objects together with all `InterviewRecord` objects in the same JSON save file.
+* maintains the association between applicants and interview records using interview record IDs stored in each `Person`.
+* exposes controlled access to storage operations through the `Storage` API.
+* does not depend on the Ui or Logic components, but depends on some classes in the Model component (since it saves and loads model data).
+
+`StorageManager` implements the `Storage` interface and acts as the central coordinator of the storage component. It manages two main storage handlers: `AddressBookStorage` for application data and `UserPrefsStorage` for user preferences. It delegates read and write operations to these respective storage classes.
+
+The `AddressBookStorage` interface defines methods to read and save `ReadOnlyAddressBook` data, while `UserPrefsStorage` defines methods to handle `UserPrefs`. The `Storage` interface extends both, allowing it to serve as a unified API for all storage operations.
+
+`JsonAddressBookStorage` is responsible for reading and writing the main application data as a JSON file on the hard disk. When saving, it converts the in-memory `ReadOnlyAddressBook` into a `JsonSerializableAddressBook`. When loading, it reads from the JSON file and converts it back into the model’s `AddressBook`. If any illegal values are found in the file, a `DataLoadingException` is thrown.
+
+`JsonSerializableAddressBook` serves as the JSON-friendly representation of the application’s main data. Besides storing applicants, it also stores interview records in a list of `JsonAdaptedInterviewRecord`. During loading, all `Person` objects are reconstructed first, followed by interview records being restored into the `InterviewDatabase` inside the `AddressBook`. This ensures that interview records are centrally managed while still being linked to applicants.
+
+`JsonAdaptedPerson` is the Jackson-friendly version of `Person`. It stores fields such as name, phone, email, address, tags, and a list of `interviewIds`. Instead of storing full interview records inside each `Person`, only the IDs are stored, which correspond to interview records kept in the `InterviewDatabase`. This design avoids data duplication and improves scalability.
+
+`JsonAdaptedInterviewRecord` is the Jackson-friendly version of `InterviewRecord`. It stores the interview record’s ID and notes, and reconstructs the corresponding model object when reading from storage. This supports the design where interview records are stored independently of applicants.
+
+`JsonUserPrefsStorage` handles the storage of `UserPrefs` in JSON format. It is responsible for saving and loading user preferences such as GUI settings and file paths.
+
+Overall, the `Storage` component separates persistence logic from the rest of the application. It uses JSON-specific adapter classes to convert between model objects and storage format, while supporting the project’s extended design of storing interview records centrally and linking them to applicants via IDs.
 
 ### Common classes
 
