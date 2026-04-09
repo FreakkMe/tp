@@ -96,8 +96,8 @@ Expected output:
 Error Message | Reason
 --------|------------------
 **This person already exists in the address book** | This indicates a person with the specified `PHONE_NUMBER` already exist.
+**Multiple values specified for the following single-valued field(s): [x/]...** | This indicates there is nultiple value of [x/]... in the use of the command. The command only takes in one of each [x/]... except for tags (t/).
 **Invalid command format!** <br> **add: Adds a person to the address book. Parameters: n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]...** <br> **Example: add n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 t/friends t/owesMoney** | This indicates there is an error in the format of the command.
-
 
 ### Listing all persons : `list`
 
@@ -110,6 +110,7 @@ Format: `list`
 Expected output:
 * Command success:
     * Listed all persons:
+
       `THE LIST OF ALL PEOPLE`
       ![result for 'list'](images/expected-output-list-command.png)
 
@@ -202,44 +203,72 @@ Examples:
 
 Expected output:
 
+Error Message | Reason
+--------|------------------
+**The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
+**At least one field to edit must be provided.** | This indicates there is no edit details provided.
+**Invalid command format!** <br> **delete: Deletes the person identified by the index number used in the displayed person list.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: delete 1** | This indicates there is an eror in the format of the command.
+
+### Editing an interview record : `edit-i`
+
+Edits an interview record of a person on the address book.
+
+Format: `edit-i INDEX`
+
+* Edits the interview record of the person of the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+* Each person when created is directly linked to an empty interview record so just edit the record instead of adding it.
+* Each changes made for a person is saved automatically and closing the panel saves all the changes.
+* Except the first time, each subsequent time `edit-i` is used on a person opens the saved interview record of the person.
+
+Examples:
+* `list` followed by `edit-i 2` edits the interview record of the 2nd person in the address book.
+* `find Betsy` followed by `edit-i 1` edits the interview record of the 1st person in the results of the `find` command.
+
+Expected output:
 * Command success:
-    * A popup window is opened for the specified applicant, allowing the user to create or edit the interview record.
+    * Opening interview editor for: `NAME` 
+       ![result for 'edit-i 1'-1](images/expected-output-edit-i-command-1.png)
+
+    * The panel of editing interview record:
+  
+       ![result for 'edit-i 1'-2](images/expected-output-edit-i-command-2.png)
 
 * Command fail:
 
 Error Message | Reason
---- | ---
-The person index provided is invalid | This indicates the `INDEX` provided does not correspond to any applicant in the currently displayed list.
-Invalid command format! | This indicates there is an error in the format of the command.
+--------|------------------
+**The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
+**Invalid command format!** <br> **edit-i: Opens the interview notes editor for the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: edit-i 1** | This indicates there is an eror in the format of the command.
 
 ### Deleting an interview record : `delete-i`
 
-Deletes the interview record content of an applicant in HRdex.
+Clears an interview record of a person on the address book.
 
 Format: `delete-i INDEX`
 
-* Deletes the interview record content of the applicant at the specified `INDEX`.
-* The index refers to the index number shown in the displayed applicant list.
-* The index must be a positive integer `1, 2, 3, ...`
-* This command removes the interview note content associated with that applicant.
-* If the applicant does not have any interview record content, the command will be rejected.
+* Clears the interview record of the person of the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+* Simply clears all interview record of the specific person or sort of 'reinitialize' the interview record.
 
 Examples:
-* `delete-i 1`
-* `find Alex` followed by `delete-i 1`
+* `list` followed by `delete-i 2` clears the interview record of the 2nd person in the address book.
+* `find Betsy` followed by `delete-i 1` clears the interview record of the 1st person in the results of the `find` command.
 
 Expected output:
-
 * Command success:
-    * The interview record content of the specified applicant is deleted.
+    * Deleted interview record for: James Hong
+      ![result for 'delete-i 1'](images/expected-output-delete-i-command.png)
 
 * Command fail:
 
 Error Message | Reason
---- | ---
-The person index provided is invalid | This indicates the `INDEX` provided does not correspond to any applicant in the currently displayed list.
-No interview record found for this applicant | This indicates the specified applicant does not currently have any interview record content to delete.
-Invalid command format! | This indicates there is an error in the format of the command.
+--------|------------------
+**The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
+**This person has no interview record.** | This indicates the person with the `INDEX` provided has empty interview record.
+**Invalid command format!** <br> **delete-i: Deletes the interview record of the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: delete-i 1** | This indicates there is an eror in the format of the command.
 
 ### List all interview records : `list-i`
 
@@ -252,20 +281,34 @@ Format: `list-i`
 Expected output:
 * Command success:
     * Listed all interview records:
+
       `THE INTERVIEW RECORD LIST`
+      ![result for 'list-i'](images/expected-output-list-i-command.png)
 
 
 * Command fail:
 
 Error Message | Reason
 --------|------------------
-**list-i command does not take any arguments.** | This indicates there is an error in the format of the command. There shouldn't be any arguments after `list-i`
+- | -
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book.
+Clears all entries in the address book.
 
 Format: `clear`
+
+Expected output:
+* Command success:
+    * Address book has been cleared!
+      ![result for 'clear'](images/expected-output-clear-command.png)
+
+
+* Command fail:
+
+Error Message | Reason
+--------|------------------
+- | -
 
 ### Exiting the program : `exit`
 
