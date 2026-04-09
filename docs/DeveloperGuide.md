@@ -295,9 +295,29 @@ Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Sinc
 
 ![UndoRedoState5](images/UndoRedoState5.png)
 
-Step 7. The user executes `add-i id/I-001 …​` to add a new interview record into the interview list. The `add-i` command then calls `Model#commitAddressBook()`, causing the modified address book state to be saved into the `addressBookStateList`.
+### \[Implemented\] Edit/Delete interview record feature
 
-![UndoRedoState5](images/UndoRedoState6.png)
+#### Implementation
+
+Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+
+![EditDeleteInitialState](images/EditDeleteInitialState.png)
+
+Step 2. The user executes `edit-i 1` to open the interview notes editor for the person at index 1. The `edit-i` command parses and validates the `index`, retrieves the corresponding `Person`, and returns a `CommandResult` that signals the `UI` to show the interview editor. The `edit-i` command does not call `Model#commitAddressBook()`, so the `currentStatePointer` is still pointing to the single address book state.
+
+![EditDeleteState0](images/EditDeleteState0.png)
+
+Step 3a. The user closes the window without pressing `Enter`. No interview note is saved into the current model. The `currentStatePointer` is still pointing to the single address book state.
+
+![EditDeleteState1](images/EditDeleteState1.png)
+
+Step 3b. The user executes `Enter` to save interview notes. The interview notes are saved into the current model and persisted to storage. However, since `Model#commitAddressBook()` is still not called, the change will not be recorded as a new state. The `currentStatePointer` is still pointing to the single address book state.
+
+![EditDeleteState2](images/EditDeleteState2.png)
+
+Step 4. The user executes `delete-i 1`. The `delete-i` command removes the selected interview record from the interview database and unlinks it from the corresponding `Person`. It then updates the current model state by replacing the original `Person` with the updated one. However, since Model#commitAddressBook() is not called, the deletion will also not be recorded as a new state. The `currentStatePointer` is still pointing to the single address book state.
+
+![EditDeleteState3](images/EditDeleteState3.png)
 
 The following activity diagram summarizes what happens when a user executes a new command:
 
