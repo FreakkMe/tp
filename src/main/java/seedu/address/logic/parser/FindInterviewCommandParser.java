@@ -28,3 +28,4 @@ public class FindInterviewCommandParser implements Parser<FindInterviewCommand> 
         return new FindInterviewCommand(List.of(keywords));
     }
 }
+
