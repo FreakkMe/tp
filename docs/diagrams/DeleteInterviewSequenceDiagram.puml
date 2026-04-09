@@ -1,0 +1,96 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":DeleteInterviewCommandParser" as DeleteInterviewCommandParser LOGIC_COLOR
+participant "d:DeleteInterviewCommand" as DeleteInterviewCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+participant "p:Person" as Person MODEL_COLOR
+participant "db:InterviewDatabase" as InterviewDatabase MODEL_COLOR
+end box
+
+[-> LogicManager : execute("delete-i 1")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("delete-i 1")
+activate AddressBookParser
+
+create DeleteInterviewCommandParser
+AddressBookParser -> DeleteInterviewCommandParser
+activate DeleteInterviewCommandParser
+
+DeleteInterviewCommandParser --> AddressBookParser
+deactivate DeleteInterviewCommandParser
+
+AddressBookParser -> DeleteInterviewCommandParser : parse("1")
+activate DeleteInterviewCommandParser
+
+create DeleteInterviewCommand
+DeleteInterviewCommandParser -> DeleteInterviewCommand
+activate DeleteInterviewCommand
+
+DeleteInterviewCommand --> DeleteInterviewCommandParser :
+deactivate DeleteInterviewCommand
+
+DeleteInterviewCommandParser --> AddressBookParser : d
+deactivate DeleteInterviewCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+DeleteInterviewCommandParser -[hidden]-> AddressBookParser
+destroy DeleteInterviewCommandParser
+
+AddressBookParser --> LogicManager : d
+deactivate AddressBookParser
+
+LogicManager -> DeleteInterviewCommand : execute(m)
+activate DeleteInterviewCommand
+
+DeleteInterviewCommand -> Model : getFilteredPersonList()
+activate Model
+
+Model --> DeleteInterviewCommand : lastShownList
+deactivate Model
+
+DeleteInterviewCommand -> Model : getInterviewDatabase()
+activate Model
+
+Model --> DeleteInterviewCommand : db
+deactivate Model
+
+DeleteInterviewCommand -> InterviewDatabase : removeInterviewRecord(interviewId)
+activate InterviewDatabase
+
+InterviewDatabase --> DeleteInterviewCommand
+deactivate InterviewDatabase
+
+DeleteInterviewCommand -> Person : removeInterviewId(interviewId)
+activate Person
+
+Person --> DeleteInterviewCommand : updatedPerson
+deactivate Person
+
+DeleteInterviewCommand -> Model : setPerson(person, updatedPerson)
+activate Model
+
+Model --> DeleteInterviewCommand
+deactivate Model
+
+create CommandResult
+DeleteInterviewCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> DeleteInterviewCommand : r
+deactivate CommandResult
+
+DeleteInterviewCommand --> LogicManager : r
+deactivate DeleteInterviewCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

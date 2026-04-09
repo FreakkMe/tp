@@ -1,0 +1,60 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant "l:ListInterviewsCommand" as ListInterviewsCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+participant "db:InterviewDatabase" as InterviewDatabase MODEL_COLOR
+end box
+
+[-> LogicManager : execute("list-i")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("list-i")
+activate AddressBookParser
+
+create ListInterviewsCommand
+AddressBookParser -> ListInterviewsCommand
+activate ListInterviewsCommand
+
+ListInterviewsCommand --> AddressBookParser : l
+deactivate ListInterviewsCommand
+
+AddressBookParser --> LogicManager : l
+deactivate AddressBookParser
+
+LogicManager -> ListInterviewsCommand : execute(m)
+activate ListInterviewsCommand
+
+ListInterviewsCommand -> Model : getInterviewDatabase()
+activate Model
+
+Model --> ListInterviewsCommand : db
+deactivate Model
+
+ListInterviewsCommand -> InterviewDatabase : getInterviewRecordList()
+activate InterviewDatabase
+
+InterviewDatabase --> ListInterviewsCommand : records
+deactivate InterviewDatabase
+
+create CommandResult
+ListInterviewsCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> ListInterviewsCommand : r
+deactivate CommandResult
+
+ListInterviewsCommand --> LogicManager : r
+deactivate ListInterviewsCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

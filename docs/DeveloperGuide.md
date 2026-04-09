@@ -188,6 +188,36 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Interview commands feature
+
+The interview commands feature allows users to manage interview records stored centrally in the `InterviewDatabase` and linked to `Person` objects via an interview ID.
+
+#### Editing Interview Notes (`edit-i`)
+
+The `edit-i` command allows users to edit or add interview notes. Instead of directly modifying the `Model` immediately, the command signals the UI to open an interactive editor. 
+
+Below is the sequence diagram detailing the execution of the `edit-i` command:
+
+![EditInterviewSequenceDiagram](images/EditInterviewSequenceDiagram.png)
+
+#### Deleting Interview Records (`delete-i`)
+
+The `delete-i` command removes a person's interview record. Because records are kept in the global `InterviewDatabase`, the command must perform a dual removal process:
+1. Removing the interview record from the `InterviewDatabase`.
+2. Unlinking the interview ID from the respective `Person`.
+
+The execution sequence is illustrated below:
+
+![DeleteInterviewSequenceDiagram](images/DeleteInterviewSequenceDiagram.png)
+
+#### Listing Interview Records (`list-i`)
+
+The `list-i` command queries the global `InterviewDatabase` directly to fetch and list all existing interview records regardless of which person they belong to. 
+
+The sequence diagram for the operation is as follows:
+
+![ListInterviewsSequenceDiagram](images/ListInterviewsSequenceDiagram.png)
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
