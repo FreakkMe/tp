@@ -51,7 +51,7 @@ public class InterviewRecord {
 
     @Override
     public String toString() {
-        return id + " | " + notes;
+        return " " + notes;
     }
 }
 

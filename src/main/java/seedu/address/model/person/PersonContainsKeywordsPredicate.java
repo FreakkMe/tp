@@ -17,8 +17,18 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
 
     @Override
     public boolean test(Person person) {
+        String searchableText = String.join(" ",
+                person.getName().fullName,
+                person.getPhone().value,
+                person.getEmail().value,
+                person.getAddress().value,
+                person.getTags().stream()
+                        .map(tag -> tag.tagName)
+                        .collect(java.util.stream.Collectors.joining(" "))
+        ).toLowerCase();
+
         return keywords.stream()
-                .anyMatch(keyword -> person.toString().toLowerCase().contains(keyword.toLowerCase()));
+                .anyMatch(keyword -> searchableText.contains(keyword.toLowerCase()));
     }
 
     @Override
