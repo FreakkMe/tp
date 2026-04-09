@@ -188,6 +188,18 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Find command
+The `find` command allows users to search for applicants by keyword. The sequence diagram below
+shows how the components interact with each other when the user issues the command `find Alex`.
+
+<img src="images/FindSequenceDiagram.png" width="574" />
+
+The `find` command does not involve `Storage` as it is a read-only operation — it only updates
+the filtered view of the applicant list in `Model`. The predicate tests each person by checking
+whether any keyword is a case-insensitive substring match against their name, phone, email,
+address, or tags. The UI is automatically refreshed via JavaFX's `ObservableList` binding,
+without requiring an explicit callback from `Logic`.
+
 ### Interview commands feature
 
 The interview commands feature allows users to manage interview records stored centrally in the `InterviewDatabase` and linked to `Person` objects via an interview ID.

@@ -151,23 +151,22 @@ Error Message | Reason
 **Invalid command format!** <br> **edit: Edits the details of the person identified by the index number used in the displayed person list. Existing values will be overwritten by the input values.** <br> **Parameters: INDEX (must be a positive integer) [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...** <br> **Example: edit 1 p/91234567 e/johndoe@example.com** | This indicates there is an error in the format of the command.
 
 
-### Locating persons by name: `find`
+### Locating persons: `find`
 
-Finds persons whose names or tags contain any of the given keywords.
+Finds persons whose details contain any of the given keywords.
 
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Applicant names and tags are searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
+* Names, phones, emails, addresses and tags are searched.
+* Partial words will be matched e.g. `Han` will match `Hans`
 * Applicants matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return applicants with the name `Hans Gruber`, `Bo Yang`
-* Tags can also be used as search keywords.
-  e.g. `find A1234567B` will return the applicant tagged with `A1234567B`
 
 Examples:
 * `find John` returns `john` and `John Doe`
+* `find 9123` returns applicants whose phone number contains `9123`
 * `find A1234567B` returns `James` tagged with `A1234567B`<br>
   ![result for 'find A1234567B'](images/findJamesByStudentIdTag.png)
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
@@ -182,7 +181,7 @@ Expected output:
 
 Error Message | Reason
 --------|------------------
-**Invalid command format!** <br> **find: Finds all persons whose names contain any of the specified keywords (case-insensitive) and displays them as a list with index numbers.** <br> **Parameters: KEYWORD [MORE_KEYWORDS]...** <br> **Example: find alice bob charlie** | This indicates there is no `KEYWORD` provided after the `find` command.
+**Invalid command format!** <br> **find: Finds all persons whose details contain any of the specified keywords (case-insensitive) and displays them as a list with index numbers.** <br> **Parameters: KEYWORD [MORE_KEYWORDS]...** <br> **Example: find alice bob charlie** | This indicates there is no `KEYWORD` provided after the `find` command.
 
 ### Editing an interview record : `edit-i`
 

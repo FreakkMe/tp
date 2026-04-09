@@ -1,0 +1,34 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+Actor User as user USER_COLOR
+Participant ":UI" as ui UI_COLOR
+Participant ":Logic" as logic LOGIC_COLOR
+Participant ":Model" as model MODEL_COLOR
+user -[USER_COLOR]> ui : "find Alex"
+activate ui UI_COLOR
+ui -[UI_COLOR]> logic : execute("find Alex")
+activate logic LOGIC_COLOR
+logic -[LOGIC_COLOR]> model : updateFilteredPersonList(predicate)
+activate model MODEL_COLOR
+model -[MODEL_COLOR]> model : filter persons by predicate
+activate model MODEL_COLOR_T1
+model --[MODEL_COLOR]> model
+deactivate model
+note right of model
+  case-insensitive substring match
+  searches name, phone, email,
+  address and tags
+  anyMatch on keywords
+end note
+model --[MODEL_COLOR]> logic
+deactivate model
+logic -[LOGIC_COLOR]> model : getFilteredPersonList().size()
+activate model MODEL_COLOR
+model --[MODEL_COLOR]> logic : 2
+deactivate model
+logic --[LOGIC_COLOR]> ui : CommandResult\n("2 persons listed!")
+deactivate logic
+ui --[UI_COLOR]> user : display filtered list\n& result message
+deactivate ui
+@enduml
