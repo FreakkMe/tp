@@ -773,7 +773,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | **CCA Leader** | One of the two primary user roles. The CCA Leader oversees the entire recruitment process — they manage the applicant list, review overall interview outcomes, and make final admission decisions. They do not necessarily conduct interviews themselves. |
 | **Interviewer** | One of the two primary user roles. The Interviewer conducts face-to-face interview sessions with applicants and records scores and comments directly into the app. They focus on per-applicant data entry rather than overall recruitment management. |
 | **CLI** | Command Line Interface; the primary mode of interaction where users type text commands. |
-| **Interview Record** | A data entity attached to an Applicant containing a score (1–5), a result (Pass/Fail/Pending), and qualitative comments from the interview session. |
+| **Interview Record** | A data entity attached to an Applicant containing a single free-text notes field recorded during the interview session. |
 | **Local App** | An application that stores all data on the computer's hard drive without requiring an internet connection. |
 | **Mainstream OS** | Windows, Linux, Unix, macOS. |
 | **Single Source of Truth** | The single shared app instance used by all CCA members (both Leaders and Interviewers) to ensure all recruitment data is consistent and centralised. |
