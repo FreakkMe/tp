@@ -216,7 +216,7 @@ Expected output:
 Error Message | Reason
 --------|------------------
 **The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
-**At least one field to edit must be provided.** | This indicates there is no edit details provided.
+**The persons index must be provided** | This indicates that the index needs to be provided
 **Invalid command format!** <br> **edit-i: Opens the interview notes editor for the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: edit-i 1** | This indicates there is an error in the format of the command.
 
 ### Deleting an interview record : `delete-i`
