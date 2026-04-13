@@ -230,6 +230,26 @@ The sequence diagram for the operation is as follows:
 
 ![ListInterviewsSequenceDiagram](images/ListInterviewsSequenceDiagram.png)
 
+### Finding Interview Records (`find-i`)
+
+The `find-i` command allows users to search for applicants based on keywords found in their interview notes. It retrieves interview records from the `InterviewDatabase` and filters applicants whose associated interview notes contain any of the given keywords.
+
+Below is the sequence of operations for the `find-i` command:
+
+1. The user enters a `find-i` command with one or more keywords.
+2. The `AddressBookParser` identifies the command and delegates parsing to `FindInterviewCommandParser`.
+3. The parser constructs a `FindInterviewCommand` with the given keywords.
+4. The command creates an `InterviewRecordContainsKeywordsPredicate`.
+5. The predicate:
+    - Retrieves interview IDs from each `Person`
+    - Uses the `InterviewDatabase` to get corresponding `InterviewRecord`
+    - Extracts the notes field
+    - Checks if any keyword matches (case-insensitive OR match)
+6. The model updates the filtered person list to include only matching applicants.
+7. The updated list is displayed in the UI.
+
+This design ensures that interview records remain centrally managed while enabling efficient keyword-based searching.
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
