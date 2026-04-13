@@ -195,7 +195,7 @@ Format: `edit-i INDEX`
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
 * Each person when created is directly linked to an empty interview record so just edit the record instead of adding it.
-* Each changes made for a person is saved automatically and closing the panel saves all the changes.
+* Changes are only saved when the user presses Enter. Closing the popup window without pressing Enter will discard any unsaved changes.
 * If the applicant already has an interview record, the existing content will be shown in the popup window and can be edited.
 
 Examples:
