@@ -10,15 +10,13 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Name {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Names should only contain alphanumeric characters, spaces, hyphens, and apostrophes, "
-            + "and it should not be blank";
+            "Names should only contain letters, spaces, hyphens, and apostrophes, and it should not be blank.";
 
     /*
-     * The first character of the name must not be a whitespace,
+     * The first character must be a letter or apostrophe (not whitespace),
      * otherwise " " (a blank string) becomes a valid input.
-     * Hyphens and apostrophes are allowed to support real-world names (e.g. Anne-Marie O'Neil).
      */
-    public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} '-]*";
+    public static final String VALIDATION_REGEX = "'?[\\p{L}]+([ '-][\\p{L}]+)*";
 
     public final String fullName;
 
@@ -29,6 +27,7 @@ public class Name {
      */
     public Name(String name) {
         requireNonNull(name);
+        name = name.trim();
         checkArgument(isValidName(name), MESSAGE_CONSTRAINTS);
         fullName = name;
     }
