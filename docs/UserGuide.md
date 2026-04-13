@@ -96,7 +96,7 @@ Expected output:
 Error Message | Reason
 --------|------------------
 **This person already exists in the address book** | This indicates a person with the specified `PHONE_NUMBER` already exist.
-**Multiple values specified for the following single-valued field(s): [x/]...** | This indicates there is nultiple value of [x/]... in the use of the command. The command only takes in one of each [x/]... except for tags (t/).
+**Multiple values specified for the following single-valued field(s): [x/]...** | This indicates there is multiple value of [x/]... in the use of the command. The command only takes in one of each [x/]... except for tags (t/).
 **Invalid command format!** <br> **add: Adds a person to the address book. Parameters: n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]...** <br> **Example: add n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 t/friends t/owesMoney** | This indicates there is an error in the format of the command.
 
 ### Listing all persons : `list`
@@ -195,7 +195,7 @@ Format: `edit-i INDEX`
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
 * Each person when created is directly linked to an empty interview record so just edit the record instead of adding it.
-* Each changes made for a person is saved automatically and closing the panel saves all the changes.
+* Changes are only saved when the user presses Enter. Closing the popup window without pressing Enter will discard any unsaved changes.
 * If the applicant already has an interview record, the existing content will be shown in the popup window and can be edited.
 
 Examples:
@@ -216,8 +216,8 @@ Expected output:
 Error Message | Reason
 --------|------------------
 **The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
-**At least one field to edit must be provided.** | This indicates there is no edit details provided.
-**Invalid command format!** <br> **edit-i: Opens the interview notes editor for the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: edit-i 1** | This indicates there is an eror in the format of the command.
+**The persons index must be provided** | This indicates that the index needs to be provided
+**Invalid command format!** <br> **edit-i: Opens the interview notes editor for the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: edit-i 1** | This indicates there is an error in the format of the command.
 
 ### Deleting an interview record : `delete-i`
 
@@ -245,7 +245,7 @@ Error Message | Reason
 --------|------------------
 **The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
 **This person has no interview record.** | This indicates the person with the `INDEX` provided has empty interview record.
-**Invalid command format!** <br> **delete-i: Deletes the interview record of the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: delete-i 1** | This indicates there is an eror in the format of the command.
+**Invalid command format!** <br> **delete-i: Deletes the interview record of the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: delete-i 1** | This indicates there is an error in the format of the command.
 
 ### List all interview records : `list-i`
 
