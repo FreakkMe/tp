@@ -3,7 +3,9 @@ layout: page
 title: User Guide
 ---
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+HRdex is a desktop application designed for **CCA leaders in NUS** who need a simple and efficient way to manage CCA's interview records.
+
+The application is optimized for users who prefer a **Command Line Interface (CLI)** while still benefiting from a graphical interface. HRdex allows CCA leaders to quickly add, search, view, and delete a person's information without navigating complicated menus.
 
 * Table of Contents
 {:toc}
@@ -12,27 +14,27 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ## Quick start
 
-1. Ensure you have Java `17` or above installed in your Computer.<br>
+1. Ensure you have Java `17` or above installed on your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+1. Download the latest `.jar` file from [here](https://github.com/AY2526S2-CS2103T-T14-3/tp/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+1. Copy the file to the folder you want to use as the _home folder_ for HRdex.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
+1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar T14-3.HRDex.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * `list` : Lists all applicants.
+   * `list` : Lists all persons.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds an applicant named `John Doe` to HRdex.
+   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a person named `John Doe` to HRdex.
 
-   * `delete 3` : Deletes the 3rd applicant shown in the current list.
+   * `delete 3` : Deletes the 3rd person shown in the current list.
 
-   * `clear` : Deletes all applicant records.
+   * `clear` : Deletes all persons records.
 
    * `exit` : Exits the app.
 
@@ -66,21 +68,21 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ### Viewing help : `help`
 
-Shows a message explaining how to access the help page.
+Shows a message with basic commands format with summary and link to access the help page.
 
 ![help message](images/helpMessage.png)
 
 Format: `help`
 
 
-### Adding an applicant record: `add`
+### Adding a person record: `add`
 
-Adds an applicant record to HRdex.
+Adds a person record to HRdex.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
 * A person can have any number of tags (including 0).
-* The `PHONE_NUMBER` is the unique id for a specific person, i.e. 2 or more people who shares a `PHONE_NUMBER` leads to an command error.
+* The `PHONE_NUMBER` is the unique id for a specific person, i.e. 2 or more persons who share a `PHONE_NUMBER` will lead to a command error.
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
@@ -95,36 +97,62 @@ Expected output:
 
 Error Message | Reason
 --------|------------------
-**This person already exists in the address book** | This indicates a person with the specified `PHONE_NUMBER` already exist.
-**Multiple values specified for the following single-valued field(s): [x/]...** | This indicates there is multiple value of [x/]... in the use of the command. The command only takes in one of each [x/]... except for tags (t/).
-**Invalid command format!** <br> **add: Adds a person to the address book. Parameters: n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]...** <br> **Example: add n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 t/friends t/owesMoney** | This indicates there is an error in the format of the command.
+**This person already exists in the HRdex** | This indicates a person with the specified `PHONE_NUMBER` already exists.
+**Multiple values specified for the following single-valued field(s): [x/]...** | This indicates there are multiple values of [x/]... in the use of the command. The command only takes in one of each [x/]... except for tags (t/).
+**Invalid command format!** <br> **add: Adds a person to the HRdex. Parameters: n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]...** <br> **Example: add n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 t/friends t/owesMoney** | This indicates there is an error in the format of the command.
 
-### Listing all persons : `list`
 
-Shows a list of all persons in the address book.
+### Deleting a person record: `delete`
 
-Format: `list`
+Deletes a person record in HRdex.
 
-* Even if there is any value input after `list`, the command still works.
+Format: `delete INDEX`
+
+* Deletes the person of the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
+Examples:
+* `list` followed by `delete 2` deletes the 2nd person in HRdex.
+* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
 Expected output:
 * Command success:
-    * Listed all persons:
-
-      `THE LIST OF ALL PEOPLE`
-      ![result for 'list'](images/expected-output-list-command.png)
+    * Deleted Person: `NAME`; Phone: `PHONE_NUMBER`; Email: `EMAIL`; Address: `ADDRESS`; Tags: `TAG`…​
+      ![result for 'delete 2'](images/expected-output-delete-command.png)
 
 * Command fail:
 
 Error Message | Reason
 --------|------------------
-- | -
+**The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
+**Invalid command format!** <br> **delete: Deletes the person identified by the index number used in the displayed person list.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: delete 1** | This indicates there is an error in the format of the command.
+
+### Listing all persons : `list`
+
+Shows a list of all persons in the HRdex.
+
+Format: `list`
+
+* Any parameters after `list` are ignored.
+
+Expected output:
+* Command success:
+    * Listed all persons:
+
+      `THE LIST OF ALL PERSONS`
+      ![result for 'list'](images/expected-output-list-command.png)
+
+* Command fail:
+
+There is no way for `list` command to fail.
+
 
 ### Editing a person : `edit`
 
-Edits an existing person in the address book.
+Edits an existing person in the HRdex.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
@@ -148,7 +176,7 @@ Error Message | Reason
 --------|------------------
 **The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
 **At least one field to edit must be provided.** | This indicates there is no edit details provided.
-**Invalid command format!** <br> **edit: Edits the details of the person identified by the index number used in the displayed person list. Existing values will be overwritten by the input values.** <br> **Parameters: INDEX (must be a positive integer) [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...** <br> **Example: edit 1 p/91234567 e/johndoe@example.com** | This indicates there is an error in the format of the command.
+**Invalid command format!** <br> **edit: Edits the details of the person identified by the index number used in the displayed person list. Existing values will be overwritten by the input values.** <br> **Parameters: INDEX (must be a positive integer) [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...** <br> **Example: edit 1 p/91234567 e/johndoe@example.com** | This indicates there is an error in the format of the command.
 
 
 ### Locating persons: `find`
@@ -159,14 +187,14 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Names, phones, emails, addresses and tags are searched.
+* Names, phone numbers, emails, addresses and tags are searched.
 * Partial words will be matched e.g. `Han` will match `Hans`
-* Applicants matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return applicants with the name `Hans Gruber`, `Bo Yang`
+* Persons matching at least one keyword will be returned (i.e. `OR` search).
+  e.g. `Hans Bo` will return persons with the name `Hans Gruber`, `Bo Yang`
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find 9123` returns applicants whose phone number contains `9123`
+* `find 9123` returns persons whose phone number contains `9123`
 * `find A1234567B` returns `James` tagged with `A1234567B`<br>
   ![result for 'find A1234567B'](images/findJamesByStudentIdTag.png)
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
@@ -175,7 +203,7 @@ Examples:
 Expected output:
 * Command success:
     * `n` persons listed!
-      `THE LIST OF ALL PEOPLE WITH KEYWORD [MORE_KEYWORDS]`
+      `THE LIST OF ALL PERSONS WITH KEYWORD [MORE_KEYWORDS]`
 
 * Command fail:
 
@@ -183,23 +211,24 @@ Error Message | Reason
 --------|------------------
 **Invalid command format!** <br> **find: Finds all persons whose details contain any of the specified keywords (case-insensitive) and displays them as a list with index numbers.** <br> **Parameters: KEYWORD [MORE_KEYWORDS]...** <br> **Example: find alice bob charlie** | This indicates there is no `KEYWORD` provided after the `find` command.
 
+
 ### Editing an interview record : `edit-i`
 
-Edits an interview record of a person on the address book.
+Edits an interview record of a person on HRdex.
 
 Format: `edit-i INDEX`
 
 * Edits the interview record of the person of the specified `INDEX`.
-* Opens a popup window for the applicant at the specified `INDEX`.
-* The popup window allows the user to enter or modify the interview record content for that applicant.
+* Opens a popup window for the person at the specified `INDEX`.
+* The popup window allows the user to enter or modify the interview record content for that person.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
-* Each person when created is directly linked to an empty interview record so just edit the record instead of adding it.
-* Changes are only saved when the user presses Enter. Closing the popup window without pressing Enter will discard any unsaved changes.
-* If the applicant already has an interview record, the existing content will be shown in the popup window and can be edited.
+* Each person, when `edit-i` is called for the first time, is linked to an empty interview record.
+* Changes are only saved when the user presses Enter in the popup editor. Closing the popup window without pressing Enter will discard any unsaved changes.
+* If the person already has an interview record, the existing content will be shown in the popup window and can be edited.
 
 Examples:
-* `list` followed by `edit-i 2` edits the interview record of the 2nd person in the address book.
+* `list` followed by `edit-i 2` edits the interview record of the 2nd person in HRdex.
 * `find Betsy` followed by `edit-i 1` edits the interview record of the 1st person in the results of the `find` command.
 
 Expected output:
@@ -216,23 +245,23 @@ Expected output:
 Error Message | Reason
 --------|------------------
 **The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
-**The persons index must be provided** | This indicates that the index needs to be provided
+**The person's index must be provided** | This indicates that the index needs to be provided
 **Invalid command format!** <br> **edit-i: Opens the interview notes editor for the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: edit-i 1** | This indicates there is an error in the format of the command.
+
 
 ### Deleting an interview record : `delete-i`
 
-Clears an interview record of a person on the address book.
+Deletes an interview record of a person on HRdex.
 
 Format: `delete-i INDEX`
 
-* Clears the interview record of the person of the specified `INDEX`.
+* Deletes the interview record of the person of the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
-* Simply clears all interview record of the specific person or sort of 'reinitialize' the interview record.
 
 Examples:
-* `list` followed by `delete-i 2` clears the interview record of the 2nd person in the address book.
-* `find Betsy` followed by `delete-i 1` clears the interview record of the 1st person in the results of the `find` command.
+* `list` followed by `delete-i 2` deletes the interview record of the 2nd person in HRdex.
+* `find Betsy` followed by `delete-i 1` deletes the interview record of the 1st person in the results of the `find` command.
 
 Expected output:
 * Command success:
@@ -244,41 +273,43 @@ Expected output:
 Error Message | Reason
 --------|------------------
 **The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
-**This person has no interview record.** | This indicates the person with the `INDEX` provided has empty interview record.
+**This person has no interview record.** | This indicates the person with the `INDEX` provided has no interview record linked to.
 **Invalid command format!** <br> **delete-i: Deletes the interview record of the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: delete-i 1** | This indicates there is an error in the format of the command.
+
 
 ### List all interview records : `list-i`
 
-Shows a list of all interview records in the address book.
+Shows a list of all interview records in HRdex.
 
-* The interview record list displays the interview record in the order that it was added.
+* The interview record list displays the interview record in the order that it was created.
 
 Format: `list-i`
+
+Any parameters after `list-i` are ignored.
 
 Expected output:
 * Command success:
     * Listed all interview records:
 
-      `THE INTERVIEW RECORD LIST`
+      `THE LIST OF ALL INTERVIEW RECORDS`
       ![result for 'list-i'](images/expected-output-list-i-command.png)
 
 
 * Command fail:
 
-Error Message | Reason
---------|------------------
-- | -
+There is no way for `list-i` command to fail.
+
 
 ### Finding interview records by keyword : `find-i`
 
-Finds applicants whose interview records contain specific keywords.
+Finds persons whose interview records contain specific keywords.
 
 Format: `find-i KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g. `java` will match `Java`
 * The search checks the content of interview records entered in the popup window.
-* Applicants whose interview records contain any of the given keywords will be displayed.
-* Only full keywords are matched based on substring search.
+* Persons whose interview records contain any of the given keywords will be displayed.
+* Partial words will be matched e.g. `goo` will match `good`
 
 Examples:
 * `find-i java`
@@ -288,7 +319,9 @@ Expected output:
 
 * Command success:
     * `n` persons listed!
-      `THE LIST OF MATCHING APPLICANTS`
+
+      `THE LIST OF MATCHING PERSONS`
+      ![result for 'find-i good'](images/expected-output-find-i-command.png)
 
 * Command fail:
 
@@ -296,23 +329,25 @@ Error Message | Reason
 --- | ---
 Invalid command format! | No keyword is provided after the command.
 
+
 ### Clearing all entries : `clear`
 
-Clears all entries in the address book.
+Clears all entries in HRdex.
 
 Format: `clear`
 
+* Any parameters after `clear` are ignored.
+
 Expected output:
 * Command success:
-    * Address book has been cleared!
+    * HRdex has been cleared!
       ![result for 'clear'](images/expected-output-clear-command.png)
 
 
 * Command fail:
 
-Error Message | Reason
---------|------------------
-- | -
+There is no way for `clear` command to fail.
+
 
 ### Exiting the program : `exit`
 
@@ -320,17 +355,18 @@ Exits the program.
 
 Format: `exit`
 
+
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+HRdex data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+HRdex data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If your changes to the data file makes its format invalid, HRdex will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
+Furthermore, certain edits can cause HRdex to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
 
 ### Archiving data files `[coming in v2.0]`
@@ -341,8 +377,8 @@ _Details coming soon ..._
 
 ## FAQ
 
-**Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**Q**: How do I transfer my data to another computer?<br>
+**A**: Install the app in the other computer and paste the `/data` folder you copy from your previous home folder (the original computer) into the new home folder (the other computer).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -357,14 +393,15 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
+**Help** | `help`
 **Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-**Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`or `find A1234567B`
 **List** | `list`
-**Interview List** | `list-i`
+**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake` or `find A1234567B`
 **Edit Interview Record** | `edit-i INDEX`<br> e.g., `edit-i 1`
 **Delete Interview Record** | `delete-i INDEX`<br> e.g., `delete-i 1`
-**Find Interview Record** | `find-i KEYWORD [MORE_KEYWORDS]`<br> e.g., `find-i java`
-**Help** | `help`
+**Interview List** | `list-i`
+**Find Interview Record** | `find-i KEYWORD [MORE_KEYWORDS]`<br> e.g., `find-i Good`
+**Clear** | `clear`
+**Exit** | `exit`

@@ -3,9 +3,9 @@
 ![Ui](docs/images/Ui.png)
 
 # HRdex
-HRdex is a desktop application designed for **HR managers working in non-IT fields** who need a simple and efficient way to manage applicant records.
+HRdex is a desktop application designed for **CCA leaders in NUS** who need a simple and efficient way to manage CCA's interview records.
 
-The application is optimized for users who prefer a **Command Line Interface (CLI)** while still benefiting from a graphical interface. HRdex allows HR personnel to quickly add, search, view, and delete applicant information without navigating complicated menus.
+The application is optimized for users who prefer a **Command Line Interface (CLI)** while still benefiting from a graphical interface. HRdex allows CCA leaders to quickly add, search, view, and delete a person's information without navigating complicated menus.
 
 ---
 
