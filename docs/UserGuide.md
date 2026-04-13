@@ -217,7 +217,7 @@ Error Message | Reason
 --------|------------------
 **The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
 **At least one field to edit must be provided.** | This indicates there is no edit details provided.
-**Invalid command format!** <br> **edit-i: Opens the interview notes editor for the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: edit-i 1** | This indicates there is an eror in the format of the command.
+**Invalid command format!** <br> **edit-i: Opens the interview notes editor for the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: edit-i 1** | This indicates there is an error in the format of the command.
 
 ### Deleting an interview record : `delete-i`
 
@@ -245,7 +245,7 @@ Error Message | Reason
 --------|------------------
 **The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
 **This person has no interview record.** | This indicates the person with the `INDEX` provided has empty interview record.
-**Invalid command format!** <br> **delete-i: Deletes the interview record of the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: delete-i 1** | This indicates there is an eror in the format of the command.
+**Invalid command format!** <br> **delete-i: Deletes the interview record of the person at the given index.** <br> **Parameters: INDEX (must be a positive integer)** <br> **Example: delete-i 1** | This indicates there is an error in the format of the command.
 
 ### List all interview records : `list-i`
 
