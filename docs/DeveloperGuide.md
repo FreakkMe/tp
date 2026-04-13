@@ -151,7 +151,7 @@ We chose to store interview records separately in an `InterviewDatabase` and let
 
 API : [`Storage.java`](https://github.com/AY2526S2-CS2103T-T14-3/tp/blob/master/src/main/java/seedu/address/storage/Storage.java)
 
-![Storage Diagram](images/StorageDiagram.png)
+![Storage Diagram](images/StorageDiagram1.png)
 
 The `Storage` component is responsible for saving application data to local storage and loading it back when the application starts.
 
