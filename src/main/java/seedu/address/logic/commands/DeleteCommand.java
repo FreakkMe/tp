@@ -41,6 +41,14 @@ public class DeleteCommand extends Command {
         }
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
+
+        String interviewId = personToDelete.getInterviewId();
+
+        if (interviewId != null) {
+            // Remove from global DB
+            model.getInterviewDatabase().removeInterviewRecord(interviewId);
+        }
+
         model.deletePerson(personToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
     }
