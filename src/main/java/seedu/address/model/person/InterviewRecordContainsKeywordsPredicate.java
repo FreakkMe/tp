@@ -35,11 +35,12 @@ public class InterviewRecordContainsKeywordsPredicate implements Predicate<Perso
      */
     @Override
     public boolean test(Person person) {
-        return person.getInterviewIds().stream()
-                .filter(interviewDatabase::contains)
-                .map(interviewDatabase::getInterviewRecord)
-                .map(InterviewRecord::getNotes)
-                .anyMatch(this::containsAnyKeyword);
+        String interviewId = person.getInterviewId();
+        if (interviewId == null || !interviewDatabase.contains(interviewId)) {
+            return false;
+        }
+        InterviewRecord record = interviewDatabase.getInterviewRecord(interviewId);
+        return containsAnyKeyword(record.getNotes());
     }
 
     /**

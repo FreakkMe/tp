@@ -97,16 +97,15 @@ public class LogicManager implements Logic {
     @Override
     public void saveInterviewNotes(Person person, String notes) {
         InterviewDatabase db = model.getInterviewDatabase();
-        String id;
+        String id = person.getInterviewId();
 
-        if (!person.getInterviewIds().isEmpty()) {
+        if (id != null) {
             // Reuse existing ID, replace the record in the DB
-            id = person.getInterviewIds().get(0);
             db.removeInterviewRecord(id);
         } else {
             // New interview — generate an ID and link it to the person
             id = UUID.randomUUID().toString();
-            Person updatedPerson = person.addInterviewRecord(id);
+            Person updatedPerson = person.setInterviewId(id);
             model.setPerson(person, updatedPerson);
         }
 

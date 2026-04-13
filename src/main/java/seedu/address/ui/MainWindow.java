@@ -119,11 +119,9 @@ class MainWindow {
     }
 
     public void handleInterviewEdit(seedu.address.model.person.Person person) {
-        // Resolve existing notes from the person's first interview record (if any)
-        String existingNotes = person.getInterviewIds().stream()
-                .findFirst()
+        // Resolve existing notes from the person's interview record (if any)
+        String existingNotes = java.util.Optional.ofNullable(person.getInterviewId())
                 .map(id -> logic.getInterviewDatabase().getInterviewRecord(id))
-                .filter(java.util.Objects::nonNull)
                 .map(record -> record.getNotes())
                 .orElse("");
 
