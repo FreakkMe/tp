@@ -812,38 +812,160 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   2. Double-click the jar file (or run java -jar [CS2103T-T14-3][HRdex].jar). <br> 
+      Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   
 
-1. Saving window preferences
+2. Saving window preferences
 
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
-
-   1. Re-launch the app by double-clicking the jar file.<br>
+   1. Resize the window to an optimum size. Move the window to a preferred position. 
+   2. Close the window.
+   3. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+### Adding a Person Record (add)
+
+3. Adding a person to HRdex
+
+    1. Prerequisites: App is running with default sample data.
+
+    2. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/Block 123, Clementi Ave 1, #01-01 t/freshman` <br>
+       Expected: Details of the added person shown in the status message. New person is added at the bottom of the list, and the list updates automatically.
+
+    3. Test case: `add n/Jane Doe p/98765432 e/jane@example.com a/Block 456` (using an existing phone number) <br>
+       Expected: Error: No person is added. Error details shown in the status message. Status bar remains the same.
+
+    4. Test case: `add n/John Doe p/98765432` <br>
+       Expected: Error showing the full correct `add` command format.
 
 ### Deleting a person
 
-1. Deleting a person while all persons are being shown
+4. Deleting a person while all persons are being shown
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+   2. Test case: `delete 1` <br>
+      Expected: First person is deleted from the list. Details of the deleted person shown in the status message. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
+   3. Test case: `delete 0` <br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   4. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size) <br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
+### Editing a Person Record (edit)
+
+5. Editing a person's details while all persons are being shown
+
+    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
+    2. Test case: `edit 1 n/Alex Tan p/91234567 e/alex@example.com` <br>
+       Expected: Person at index 1 is updated. Success message shows the new details.
+
+    3. Test case: `edit 2 t/` <br>
+       Expected: All tags of the 2nd person are removed.
+
+    4. Test case: `edit 1` <br>
+       Expected: Error showing the full correct `edit` command format.
+
+
+### Finding Persons (find)
+
+6. Finding a person while the given keyword
+
+    1. Prerequisites: There are some person's in HRdex
+
+    2. Test case: `find John` <br>
+       Expected: Only persons whose name, phone, email, address or tags contain “John” are shown.
+
+    3. Test case: `find alex david` <br>
+       Expected: Persons matching either "alex" or "david" are displayed.
+
+    4. Test case: `find` <br>
+       Expected: Error showing correct `find` command format.
+
+### Editing an Interview Record (edit-i)
+
+7. Editing an interview record of a person
+
+    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
+    2. Test case: `edit-i 1` <br>
+       Expected: “Opening interview editor for: [Name]” message appears and a popup editor window opens.
+
+    3. Test case: Type notes in the popup (e.g. “Strong leadership skills, good teamwork”). Press Enter (not just close the window). <br>
+       Expected: Popup closes, interview record is saved. Running list-i or find-i later shows the new notes.
+
+    3. Test case: Open `edit-i 2`, type something, then close the window without pressing Enter. <br>
+       Expected: Changes are discarded.
+
+
+### Deleting an Interview Record (delete-i)
+
+8. Deleting an interview record of a person
+
+    1. Prerequisites: A person must have an interview record (use edit-i first).
+
+    2. Test case: `delete-i 1` <br>
+       Expected: Success message “Deleted interview record for: `NAME`”. The record is gone from list-i.
+
+    3. Test case: `delete-i 2` (on a person without notes) <br>
+       Expected: Error: “This person has no interview record.”
+
+    4. Test case: `delete-i 0` <br>
+       Expected: Error: “The person index provided is invalid”.
+
+### Listing All Interview Records (list-i)
+
+9. Listing all persons in HRdex
+
+    1. Prerequisites: There are some person's in HRdex
+
+    2. Test case: `list-i` <br>
+       Expected: “Listed all interview records” message appears. All persons who have interview notes are shown (in the order they were created).
+
+### Finding Interview Records (find-i)
+
+10. Finding a person with the specified keyword in his interview record
+
+    1. Prerequisites: Some persons must have an interview record (use edit-i first).
+
+    2. Test case: `find-i leadership` (or any word that exists in notes) <br>
+       Expected: Only persons whose interview notes contain the keyword(s) are listed.
+
+    3. Test case: `find-i` <br>
+       Expected: Error showing correct find-i command format.
+
+
+### Clearing All Entries (clear)
+
+10. Clearing all persons and interview records in HRdex
+
+    1. Prerequisites: There is some data (person) in HRdex
+
+    2. Test case: `clear` <br>
+       Expected: All persons and interview records are removed. Success message: “HRdex has been cleared!”.
+
+Warning: This action cannot be undone.
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+11. Auto-save after every command
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+    1. Perform any command that changes data (add, edit, delete, edit-i, etc.). Close the app and re-launch.
+       Expected: All changes are still present.
 
-1. _{ more test cases …​ }_
+12. Missing data file
+
+    1. Delete the data/addressbook.json file in /data folder and ee-launch the app.
+       Expected: App starts with sample data (no crash).
+
+13. Corrupted data file
+
+    1. Open data/addressbook.json and corrupt it (e.g. delete a closing bracket } or change a field to invalid value) and re-launch the app.
+       Expected: App discards the corrupted file and starts with an empty list + shows a warning in the console/logs. Data is not lost permanently.
+
+14. Transfer data to another computer
+
+    1. Copy the entire data/ folder to another computer. Place it in the same folder as the JAR and launch.
+       Expected: All persons and interview records appear exactly as before.
