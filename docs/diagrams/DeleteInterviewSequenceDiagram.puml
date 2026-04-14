@@ -12,7 +12,9 @@ end box
 
 box Model MODEL_COLOR_T1
 participant "m:Model" as Model MODEL_COLOR
+participant "lastShownList:List" as lastShownList MODEL_COLOR
 participant "p:Person" as Person MODEL_COLOR
+participant "interviewIds:List" as interviewIds MODEL_COLOR
 participant "db:InterviewDatabase" as InterviewDatabase MODEL_COLOR
 end box
 
@@ -56,6 +58,25 @@ activate Model
 
 Model --> DeleteInterviewCommand : lastShownList
 deactivate Model
+
+DeleteInterviewCommand -> lastShownList : get(targetIndex)
+activate lastShownList
+
+lastShownList --> DeleteInterviewCommand : person
+deactivate lastShownList
+
+DeleteInterviewCommand -> Person : getInterviewIds()
+activate Person
+
+Person --> DeleteInterviewCommand : interviewIds
+deactivate Person
+
+
+DeleteInterviewCommand -> interviewIds : get(0)
+activate interviewIds
+
+interviewIds --> DeleteInterviewCommand : interviewId
+deactivate interviewIds
 
 DeleteInterviewCommand -> Model : getInterviewDatabase()
 activate Model
