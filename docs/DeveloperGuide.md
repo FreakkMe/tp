@@ -939,7 +939,7 @@ testers are expected to do more *exploratory* testing.
 
 ### Clearing All Entries (clear)
 
-10. Clearing all persons and interview records in HRdex
+11. Clearing all persons and interview records in HRdex
 
     1. Prerequisites: There is some data (person) in HRdex
 
@@ -950,22 +950,22 @@ Warning: This action cannot be undone.
 
 ### Saving data
 
-11. Auto-save after every command
+12. Auto-save after every command
 
     1. Perform any command that changes data (add, edit, delete, edit-i, etc.). Close the app and re-launch.
        Expected: All changes are still present.
 
-12. Missing data file
+13. Missing data file
 
     1. Delete the data/addressbook.json file in /data folder and ee-launch the app.
        Expected: App starts with sample data (no crash).
 
-13. Corrupted data file
+14. Corrupted data file
 
     1. Open data/addressbook.json and corrupt it (e.g. delete a closing bracket } or change a field to invalid value) and re-launch the app.
        Expected: App discards the corrupted file and starts with an empty list + shows a warning in the console/logs. Data is not lost permanently.
 
-14. Transfer data to another computer
+15. Transfer data to another computer
 
     1. Copy the entire data/ folder to another computer. Place it in the same folder as the JAR and launch.
        Expected: All persons and interview records appear exactly as before.
