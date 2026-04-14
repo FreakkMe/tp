@@ -34,7 +34,7 @@ public class Person {
     }
 
     /**
-     * Every field must be present and not null. New constructor that adds the interviewIds field.
+     * Every field must be present and not null. New constructor that adds the interviewId field.
      */
     public Person(Name name, Phone phone, Email email, Address address,
                   Set<Tag> tags, String interviewId) {
