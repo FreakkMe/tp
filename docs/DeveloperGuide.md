@@ -593,12 +593,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
      Use case ends.
 
-* 2a. The index number is invalid.
-
-  * 2a1. HRdex shows an error message indicating invalid index number format.
-
-    Use case ends.
-
 **UC5. Add an interview record to an existing applicant**
 
 **System:** HRdex
