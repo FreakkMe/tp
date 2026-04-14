@@ -39,7 +39,7 @@ class MainWindow {
 
         // 1. Menu Bar (Toolbar)
         MenuBar menuBar = new MenuBar();
-        menuBar.setStyle("-fx-background-color: #252529; -fx-font-family: 'JetBrains Mono';");
+        menuBar.setStyle("-fx-background-color: #6d6d78; -fx-font-family: 'JetBrains Mono'");
 
         Menu fileMenu = new Menu("File");
         MenuItem exitItem = new MenuItem("Exit");
