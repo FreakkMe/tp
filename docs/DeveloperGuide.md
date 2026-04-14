@@ -580,7 +580,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  CCA Leader enters the command to view the applicant list using index number.
+1.  CCA Leader enters the command to view the applicant list.
 2.  HRdex retrieves all applicant records and their interview statuses.
 3.  HRdex displays the consolidated applicant list.
 
@@ -772,7 +772,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 5.  Should respond to typical user commands within 2 seconds when operating on a dataset of up to 1000 applicant records.
 6.  Should store data locally on the user’s device so that it can be used without an internet connection.
 7.  Should preserve data between sessions by saving all applicant and interview records to persistent storage.
-8.  Should preserve data between devices by saving persistent storage within the app and not locally.
+8.  Should allow data to be transferred between devices by keeping the persistent storage file in a portable and accessible app data location.
 9.  Should have a predictable location for data within the app
 10.  Should reject invalid inputs with clear and specific error messages, so that users can correct their commands easily.
 11.  Should prevent ambiguous or inconsistent data states, such as duplicate applicants with the same student ID or phone number, or multiple interview records for one applicant.
