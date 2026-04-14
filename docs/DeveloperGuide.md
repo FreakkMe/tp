@@ -137,7 +137,7 @@ The `AddressBook` serves as the main in-memory data container. Besides storing t
 
 The `InterviewDatabase` manages interview records centrally. Each interview record is uniquely identified by an ID and can be retrieved efficiently using that ID. This allows interview records to be created, updated, and removed independently of the applicant list.
 
-Instead of storing full `InterviewRecord` objects inside each `Person`, each `Person` stores only a list of interview record IDs. This design reduces duplication, keeps applicant data lightweight, and makes interview record management more scalable and maintainable.
+Instead of storing full `InterviewRecord` objects inside each `Person`, each `Person` stores only a single interview record ID (or `null` if no interview record exists). This design reduces duplication, keeps applicant data lightweight, and makes interview record management more scalable and maintainable.
 
 <box type="info" seamless>
 
@@ -171,7 +171,7 @@ The `AddressBookStorage` interface defines methods to read and save `ReadOnlyAdd
 
 `JsonSerializableAddressBook` serves as the JSON-friendly representation of the application’s main data. Besides storing applicants, it also stores interview records in a list of `JsonAdaptedInterviewRecord`. During loading, all `Person` objects are reconstructed first, followed by interview records being restored into the `InterviewDatabase` inside the `AddressBook`. This ensures that interview records are centrally managed while still being linked to applicants.
 
-`JsonAdaptedPerson` is the Jackson-friendly version of `Person`. It stores fields such as name, phone, email, address, tags, and a list of `interviewIds`. Instead of storing full interview records inside each `Person`, only the IDs are stored, which correspond to interview records kept in the `InterviewDatabase`. This design avoids data duplication and improves scalability.
+`JsonAdaptedPerson` is the Jackson-friendly version of `Person`. It stores fields such as name, phone, email, address, tags, and a single `interviewId` (or `null` if none exists). Instead of storing a full interview record inside each `Person`, only the ID is stored, which corresponds to an interview record kept in the `InterviewDatabase`. This design avoids data duplication and improves scalability.
 
 `JsonAdaptedInterviewRecord` is the Jackson-friendly version of `InterviewRecord`. It stores the interview record’s ID and notes, and reconstructs the corresponding model object when reading from storage. This supports the design where interview records are stored independently of applicants.
 
