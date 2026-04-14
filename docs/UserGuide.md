@@ -21,7 +21,7 @@ The application is optimized for users who prefer a **Command Line Interface (CL
 
 1. Copy the file to the folder you want to use as the _home folder_ for HRdex.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar T14-3.HRDex.jar` command to run the application.<br>
+1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar [CS2103T-T14-3][HRdex].jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
@@ -100,6 +100,9 @@ Expected output:
 Error Message | Reason
 --------|------------------
 **This person already exists in the HRdex** | This indicates a person with the specified `PHONE_NUMBER` already exists.
+**Names should only contain letters, spaces, hyphens, and apostrophes, and it should not be blank.** | This indicates the format for `NAME` is incorrect.
+**Phone numbers should only contain numbers, and it should be at least 3 digits long** | This indicates the format for `PHONE_NUMBER` is incorrect.
+**Emails should be of the format local-part@domain and adhere to the following constraints:** <br> **1. The local-part should only contain alphanumeric characters and these special characters, excluding the parentheses, (+_.-). The local-part may not start or end with any special characters.** <br> **2. This is followed by a '@' and then a domain name. The domain name is made up of domain labels separated by periods.** <br> **The domain name must: <br> - end with a domain label at least 2 characters long** <br> **- have each domain label start and end with alphanumeric characters** <br> **- have each domain label consist of alphanumeric characters, separated only by hyphens, if any.** | This indicates the format for `EMAIL` is incorrect.
 **Multiple values specified for the following single-valued field(s): [x/]...** | This indicates there are multiple values of [x/]... in the use of the command. The command only takes in one of each [x/]... except for tags (t/).
 **Invalid command format!** <br> **add: Adds a person to the HRdex. Parameters: n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]...** <br> **Example: add n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 t/friends t/owesMoney** | This indicates there is an error in the format of the command.
 
@@ -113,6 +116,7 @@ Format: `delete INDEX`
 * Deletes the person of the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* Deleting a person with an interview record also deletes the interview record.
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in HRdex.
@@ -178,6 +182,10 @@ Error Message | Reason
 --------|------------------
 **The person index provided is invalid** | This indicates the `INDEX` provided is invalid.
 **At least one field to edit must be provided.** | This indicates there is no edit details provided.
+**Names should only contain letters, spaces, hyphens, and apostrophes, and it should not be blank.** | This indicates the format for `NAME` is incorrect.
+**Phone numbers should only contain numbers, and it should be at least 3 digits long** | This indicates the format for `PHONE_NUMBER` is incorrect.
+**Emails should be of the format local-part@domain and adhere to the following constraints:** <br> **1. The local-part should only contain alphanumeric characters and these special characters, excluding the parentheses, (+_.-). The local-part may not start or end with any special characters.** <br> **2. This is followed by a '@' and then a domain name. The domain name is made up of domain labels separated by periods.** <br> **The domain name must: <br> - end with a domain label at least 2 characters long** <br> **- have each domain label start and end with alphanumeric characters** <br> **- have each domain label consist of alphanumeric characters, separated only by hyphens, if any.** | This indicates the format for `EMAIL` is incorrect.
+**Multiple values specified for the following single-valued field(s): [x/]...** | This indicates there are multiple values of [x/]... in the use of the command. The command only takes in one of each [x/]... except for tags (t/).
 **Invalid command format!** <br> **edit: Edits the details of the person identified by the index number used in the displayed person list. Existing values will be overwritten by the input values.** <br> **Parameters: INDEX (must be a positive integer) [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...** <br> **Example: edit 1 p/91234567 e/johndoe@example.com** | This indicates there is an error in the format of the command.
 
 
