@@ -81,6 +81,8 @@ Adds a person record to HRdex.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
+* A person's `NAME` must only contain letters, spaces, hyphens, and apostrophes, and it must not be blank.
+* Any spaces surrounding a person's `NAME` is trimmed.
 * A person can have any number of tags (including 0).
 * The `PHONE_NUMBER` is the unique id for a specific person, i.e. 2 or more persons who share a `PHONE_NUMBER` will lead to a command error.
 
