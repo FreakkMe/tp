@@ -1,8 +1,6 @@
 package seedu.address.ui;
 
 import java.util.Comparator;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -87,14 +85,10 @@ class PersonCard extends VBox {
         }
 
         // 4. Interview Records
-        String records = person.getInterviewIds().stream()
-                .map(db::getInterviewRecord)
-                .filter(Objects::nonNull)
-                .map(Object::toString)
-                .collect(Collectors.joining("\n"));
-
-        if (!records.isEmpty()) {
-            Label recLabel = new Label("Interviews:\n" + records);
+        String interviewId = person.getInterviewId();
+        if (interviewId != null && db.getInterviewRecord(interviewId) != null) {
+            String record = String.valueOf(db.getInterviewRecord(interviewId));
+            Label recLabel = new Label("Interview:\n" + record);
             recLabel.setTextFill(Color.web("#5a5a70"));
             recLabel.setFont(Font.font(MONO, 11));
             recLabel.setWrapText(true);

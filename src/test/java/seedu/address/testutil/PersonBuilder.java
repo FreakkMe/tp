@@ -1,9 +1,6 @@
 package seedu.address.testutil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import seedu.address.model.person.Address;
@@ -23,14 +20,14 @@ public class PersonBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
-    public static final List<String> DEFAULT_INTERVIEW_IDS = new ArrayList<>();
+    public static final String DEFAULT_INTERVIEW_ID = null;
 
     private Name name;
     private Phone phone;
     private Email email;
     private Address address;
     private Set<Tag> tags;
-    private List<String> interviewIds;
+    private String interviewId;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -41,7 +38,7 @@ public class PersonBuilder {
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         tags = new HashSet<>();
-        interviewIds = new ArrayList<>(DEFAULT_INTERVIEW_IDS);
+        interviewId = DEFAULT_INTERVIEW_ID;
     }
 
     /**
@@ -53,9 +50,7 @@ public class PersonBuilder {
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
         tags = new HashSet<>(personToCopy.getTags());
-        interviewIds = personToCopy.getInterviewIds() != null
-                ? new ArrayList<>(personToCopy.getInterviewIds())
-                : new ArrayList<>();
+        interviewId = personToCopy.getInterviewId();
     }
 
     /**
@@ -99,23 +94,15 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the list of interview IDs for the {@code Person} that we are building.
+     * Sets the interview ID for the {@code Person} that we are building.
      */
-    public PersonBuilder withInterviewIds(String... interviewIds) {
-        this.interviewIds = Arrays.asList(interviewIds);
-        return this;
-    }
-
-    /**
-     * Sets the list of interview IDs for the {@code Person} that we are building.
-     */
-    public PersonBuilder withInterviewIds(List<String> interviewIds) {
-        this.interviewIds = new ArrayList<>(interviewIds);
+    public PersonBuilder withInterviewId(String interviewId) {
+        this.interviewId = interviewId;
         return this;
     }
 
     public Person build() {
-        return new Person(name, phone, email, address, tags, interviewIds);
+        return new Person(name, phone, email, address, tags, interviewId);
     }
 
 }

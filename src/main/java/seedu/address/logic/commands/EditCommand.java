@@ -8,7 +8,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -101,9 +100,9 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
-        List<String> updatedInterviewIds = new ArrayList<>(personToEdit.getInterviewIds());
+        String updatedInterviewId = editPersonDescriptor.getInterviewId().orElse(personToEdit.getInterviewId());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedInterviewIds);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedInterviewId);
     }
 
     @Override
@@ -140,7 +139,7 @@ public class EditCommand extends Command {
         private Email email;
         private Address address;
         private Set<Tag> tags;
-        private List<String> interviewIds;
+        private String interviewId;
 
         public EditPersonDescriptor() {}
 
@@ -154,7 +153,7 @@ public class EditCommand extends Command {
             setEmail(toCopy.email);
             setAddress(toCopy.address);
             setTags(toCopy.tags);
-            setInterviewIds(toCopy.interviewIds);
+            setInterviewId(toCopy.interviewId);
         }
 
         /**
@@ -213,12 +212,12 @@ public class EditCommand extends Command {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
         }
 
-        public void setInterviewIds(List<String> interviewIds) {
-            this.interviewIds = interviewIds;
+        public void setInterviewId(String interviewId) {
+            this.interviewId = interviewId;
         }
 
-        public Optional<List<String>> getInterviewIds() {
-            return Optional.ofNullable(interviewIds);
+        public Optional<String> getInterviewId() {
+            return Optional.ofNullable(interviewId);
         }
 
         @Override

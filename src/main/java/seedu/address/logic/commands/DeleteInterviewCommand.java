@@ -53,17 +53,17 @@ public class DeleteInterviewCommand extends Command {
 
         Person person = lastShownList.get(targetIndex.getZeroBased());
 
-        if (person.getInterviewIds().isEmpty()) {
+        String interviewId = person.getInterviewId();
+
+        if (interviewId == null) {
             return new CommandResult(MESSAGE_NO_INTERVIEW);
         }
-
-        String interviewId = person.getInterviewIds().get(0);
 
         // Remove from global DB
         model.getInterviewDatabase().removeInterviewRecord(interviewId);
 
         // Unlink from person
-        Person updatedPerson = person.removeInterviewId(interviewId);
+        Person updatedPerson = person.clearInterviewRecord();
         model.setPerson(person, updatedPerson);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, person.getName().fullName));
