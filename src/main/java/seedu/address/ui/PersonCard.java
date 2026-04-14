@@ -15,7 +15,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -44,15 +43,16 @@ class PersonCard extends VBox {
         Label nameLabel = new Label(person.getName().fullName);
         nameLabel.setTextFill(Color.web("#e8e8ec"));
         nameLabel.setFont(Font.font(MONO, FontWeight.BOLD, 15));
+        HBox.setHgrow(nameLabel, Priority.ALWAYS);
+        nameLabel.setMaxWidth(Double.MAX_VALUE);
+        nameLabel.setMinWidth(0);
 
         Label indexLabel = new Label("#" + index);
         indexLabel.setTextFill(Color.web("#5a5a70"));
         indexLabel.setFont(Font.font(MONO, 11));
+        indexLabel.setMinWidth(Label.USE_PREF_SIZE);
 
-        HBox header = new HBox(nameLabel);
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        header.getChildren().addAll(spacer, indexLabel);
+        HBox header = new HBox(nameLabel, indexLabel);
         header.setAlignment(Pos.CENTER_LEFT);
 
         // 2. Contact Info
